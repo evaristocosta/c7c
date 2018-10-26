@@ -1,0 +1,40 @@
+\author
+	title:"Quando Buscamos"|
+	subtitle: "Violinos 1 e 2" |
+	compositor: "Luciana Simora" |
+||
+
+\instruments
+	violin v1 |
+	numFrac c = 0.5 |
+	numFrac sc = 0.25 |
+||
+%
+\setup
+	key: C |
+	time: 4/4 |
+	bpm: 67 |
+||
+
+\sheetmusic
+	v1.1 =	1.P.4 +| 1.P.sc 2.A.sc 2.B.sc 2.C.1.5 2.A.sc 2.B.sc 2.C.sc 2.B.sc 2.A.c +| 2.G.0.75 1.F.2.25 2.D.1 |
+
+	|:
+		v1.2 = 2.E.2 2.D.c 2.D.1.5 +| 2.C.2 +
+		v1.3 = + 2.F.c 2.E.c 2.D.c 2.C.c |
+
+	
+
+~
+
+	1.
+		v1.7 = 2.C.2 2.D.2 | ~
+
+	2.
+		~ v1.8 = 2.C.2 2.C.2 |
+
+	:|
+
+	v1.9 = 1.F.c 2.D.2.5 2.E.1 |
+	
+||

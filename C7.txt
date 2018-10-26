@@ -1,0 +1,1 @@
+./Debug/main.cpp.o ./Debug/lexical.cpp.o ./Debug/DFA.cpp.o
