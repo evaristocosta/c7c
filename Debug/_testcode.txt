@@ -23,15 +23,15 @@
 		v1.2 = 2.E.2 2.D.c 2.D.1.5 +| 2.C.2 +
 		v1.3 = + 2.F.c 2.E.c 2.D.c 2.C.c |
 
-	~Estas sao
-	linha de 
-	comentarios ~
+	
+
+ 
 
 	1.
-		v1.7 = 2.C.2 2.D.2 | ~ comentario dps~
+		v1.7 = 2.C.2 2.D.2 |  
 
 	2.
-		~ comentario antes ~ v1.8 = 2.C.2 2.C.2 |
+		  v1.8 = 2.C.2 2.C.2 |
 
 	:|
 

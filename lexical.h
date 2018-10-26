@@ -12,9 +12,6 @@ public:
 	// Construtor
 	lexical();
 	
-	// Removedor de comentários
-	void removeComentario();
-	
 	// Análise de alfabeto
 	void analiseCaracteres();
 	
@@ -36,7 +33,7 @@ private:
 	ofstream newSource;
  
 	// Strings gerais
-	string arquivo, 	// Nome do arquivo
+	string original, arquivo, 	// Nome dos arquivos
 		linhaInteira,		// Linha inteira separada de getline
 		palavra;			// String de manipulação
 		

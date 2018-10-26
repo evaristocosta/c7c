@@ -6,6 +6,7 @@ using namespace std;
 
 #include "lexical.h"
 
+// Definição do autômato
 DFA<char> afd(0, false);
 
 lexical::lexical() {
@@ -14,15 +15,14 @@ lexical::lexical() {
 	linha = 0;
 	coluna = 0;
 	
-	arquivo = "testcode2.txt";
-	tamanhoDoArquivo = GetFileSize(arquivo);
+	original = "testcode.txt";
+	tamanhoDoArquivo = GetFileSize(original);
 	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
 	
-	removeComentario();
+	arquivo = "_"+original;
 	
-	// Realiza análise de alfabeto
-	//analiseCaracteres();
-	
+	// Realiza análise de alfabeto e remove comentários
+	analiseCaracteres();
 	
 	// =============== CONSTRUÇÃO DO AFD ===============
 	afd.add_state(0, false);
@@ -92,51 +92,30 @@ lexical::lexical() {
 	
 	
 	// Realiza a tokenização
-	//todosTokens();
+	todosTokens();
 	
 	cout << "\nFim da análise léxica:" << endl;
 	cout << "Qtde de linhas: " << linha << endl;
 }
 
-void lexical::removeComentario() {
-	sourceCode.open(arquivo);
-	newSource.open("new_"+arquivo);
+
+// =============== REALIZA ANÁLISE DE ALFABETO E REMOÇÃO DE CONMENTÁRIOS ===============
+void lexical::analiseCaracteres() {
+	regex alfabeto("[\\-*(a-z)*(A-Z)*(0-9)*\\s*\\t*\\,*\\.*\\;*\\\"*\\:*\\~*\\|*\\\\*\\+*\\/*\\=*\\~*]*");
+	int linhaAnalise = 1, marcador = 1;
+	string umCaracter;
+	size_t posicao;
+	
+	// abre o arquivo com código fonte
+	sourceCode.open(original);
 	
 	if(!sourceCode.is_open()) {
 		cout << "Impossível abrir o arquivo." << endl;
 		exit(1);
 	}
 	
-	size_t posicao;
-	char umPorUm;
-	int marcador = 1;
+	newSource.open(arquivo);
 	
-	while(getline(sourceCode, linhaInteira)) {
-		for(posicao = 0; posicao < linhaInteira.length(); ++posicao) {
-			umPorUm = linhaInteira.at(posicao);
-			
-			if(umPorUm == '~')
-				++marcador;
-			
-			if(marcador % 2) 
-				newSource << umPorUm;
-		}
-		newSource << "\n";
-	}
-	newSource.close();
-	sourceCode.close();
-}
-
-
-// =============== REALIZA ANÁLISE DE ALFABETO ===============
-void lexical::analiseCaracteres() {
-	regex alfabeto("[\\-*(a-z)*(A-Z)*(0-9)*\\s*\\t*\\,*\\.*\\;*\\\"*\\:*\\~*\\|*\\\\*\\+*\\/*\\=*\\~*]*");
-	int linhaAnalise = 1;
-	string umCaracter;
-	size_t posicao;
-	
-	// abre o arquivo com código fonte
-	sourceCode.open(arquivo);
 	
 	cout << "Inicio - análise do alfabeto" << endl;
 	
@@ -150,13 +129,24 @@ void lexical::analiseCaracteres() {
 				cout << " (" << umCaracter << ")" << endl;
 			}
 			
+			if(!umCaracter.compare("~")) {
+				++marcador;
+				umCaracter = 0x20;
+			}
+			
+			if(marcador % 2) 
+				newSource << umCaracter;
+			
 		}
+		newSource << "\n";
 		linhaAnalise++;		
 	}
 	
 	cout << "Fim - análise do alfabeto\n\n" << endl;
+	
 	// fecha arquivo e termina parte de análise do alfabeto
 	sourceCode.close();
+	newSource.close();
 }
 
 // =============== GERENCIAMENTO DE ADIÇÃO DE TOKENS ===============
@@ -175,7 +165,7 @@ void lexical::todosTokens(){
 		
 		// Não considera nova linha com \s ou \t
 		if(tamanhoString <= 0) {
-			Token = {novaLinha, "nova linha", linha, 0};
+			Token = {novaLinha, "\n", linha, 0};
 			tabelaDeSimbolos.push_back(Token);
 		} else {
 			stringstream strs(linhaInteira);
@@ -189,12 +179,12 @@ void lexical::todosTokens(){
 			}
 		}
 	}
-	/*
+	
 	// Print de todos tokens
 	list<token>::iterator receptor;
 	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) 
-		cout << receptor->valor << endl;
-	*/
+		cout << receptor->valor;
+	
 	sourceCode.close();
 }
 
@@ -205,6 +195,7 @@ token lexical::proximoToken() {
 	 * Com a implementação de autômatos, é possível remover essa parte. 
 	 * No entanto, isso pode acrescer em desempenho.  */
 	// Verificação de pipe duplo: ||
+/*
 	regex doublePipe("\\|{2}");
 	if(regex_match(palavra, doublePipe))
 		return trabalhado = {fimDeSecao, "fimDeSecao: ||", linha, coluna};
@@ -213,12 +204,13 @@ token lexical::proximoToken() {
 	regex singlePipe("\\|{1}");
 	if(regex_match(palavra, singlePipe))
 		return trabalhado = {fimDeCompasso, "fimDeCompasso: |", linha, coluna};
-		
+*/		
 	//Verifica se é início ou fim de ritornelo
 	if(!palavra.compare("|:"))
-		return trabalhado = {comecoDeRepeticao, "comecoDeRepeticao: |:", linha, coluna};
+		return trabalhado = {comecoDeRepeticao, "|:", linha, coluna};
 	else if(!palavra.compare(":|"))
-		return trabalhado = {fimDeRepeticao, "fimDeRepeticao: :|", linha, coluna};
+		return trabalhado = {fimDeRepeticao, ":|", linha, coluna};
+
 	// ====================================================
 
 
@@ -277,7 +269,7 @@ token lexical::proximoToken() {
 	}
 	
 	if(!lexema.compare("$"))
-		return trabalhado = {fimDaLinha, "fimDaLinha", linha, coluna};
+		return trabalhado = {fimDaLinha, "\n", linha, coluna};
 	else {
 		palavra.pop_back();		
 		cout << "Token não reconhecido - final (" << linha << "): " << palavra << endl;

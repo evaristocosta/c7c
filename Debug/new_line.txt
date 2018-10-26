@@ -1,9 +1,0 @@
-	title:"Quando Buscamos"|
-	~
-	subtitle: "hey" |
-	
-
-
-~
-
-	\author
