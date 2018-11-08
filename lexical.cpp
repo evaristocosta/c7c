@@ -28,65 +28,65 @@ lexical::lexical() {
 	afd.add_state(0, false);
 
 	// Estados finais
-	afd.add_state(sNumero, 				true);
-	afd.add_state(sIdentificador, 		true);
+	afd.add_state(TK_NUMBER, 	true);
+	afd.add_state(TK_IDENTIFIER,true);
 	
-	afd.add_state(fimDeSecao, 			true);
-	afd.add_state(fimDeCompasso, 		true);
-	afd.add_state(virgula, 				true);
-	afd.add_state(ponto, 				true);
-	afd.add_state(comecoDeRepeticao, 	true);
-	afd.add_state(fimDeRepeticao, 		true);
+	afd.add_state(TK_DPIPE, 	true);
+	afd.add_state(TK_SPIPE, 	true);
+	afd.add_state(TK_COMMA, 	true);
+	afd.add_state(TK_DOT, 		true);
+	afd.add_state(TK_PIPEDDOT, 	true);
+	afd.add_state(TK_DDOTPIPE, 	true);
 	
-	afd.add_state(igual, 				true);
-	afd.add_state(doisPontos, 			true);
-	afd.add_state(aspaDupla, 			true);
+	afd.add_state(TK_EQUAL, 	true);
+	afd.add_state(TK_DDOT, 		true);
+	afd.add_state(TK_DQUOTE, 	true);
 	
-	afd.add_state(divisao, 				true);
-	afd.add_state(soma, 				true);
-	afd.add_state(somaDeCompasso, 		true);
-	afd.add_state(subtracao, 			true);
+	afd.add_state(TK_SLASH, 	true);
+	afd.add_state(TK_SUM, 		true);
+	afd.add_state(TK_COMPASSUM, true);
+	afd.add_state(TK_SUB, 		true);
 	
-	afd.add_state(comentario, 			true);
+	afd.add_state(TK_COMMENT, 	true);
 	
 	// Transições de pontuação
-	afd.add_transition(0, 				'|', 	fimDeCompasso);
-	afd.add_transition(fimDeCompasso, 	'|', 	fimDeSecao);
-	afd.add_transition(fimDeCompasso, 	':', 	comecoDeRepeticao);
+	afd.add_transition(0, 		'|', 	TK_SPIPE);
+	afd.add_transition(TK_SPIPE,'|', 	TK_DPIPE);
+	afd.add_transition(TK_SPIPE,':', 	TK_PIPEDDOT);
 		
-	afd.add_transition(0, 				',', 	virgula);
-	afd.add_transition(0, 				'.', 	ponto);
+	afd.add_transition(0, 		',', 	TK_COMMA);
+	afd.add_transition(0, 		'.', 	TK_DOT);
 		
-	afd.add_transition(0, 				'=', 	igual);
+	afd.add_transition(0, 		'=', 	TK_EQUAL);
 		
-	afd.add_transition(0, 				':', 	doisPontos);
-	afd.add_transition(doisPontos, 		'|', 	fimDeRepeticao);
+	afd.add_transition(0, 		':', 	TK_DDOT);
+	afd.add_transition(TK_DDOT, '|', 	TK_DDOTPIPE);
 		
-	afd.add_transition(0, 				'\"',	aspaDupla);
+	afd.add_transition(0, 		'\"',	TK_DQUOTE);
 		
-	afd.add_transition(0, 				'/', 	divisao);
-	afd.add_transition(0, 				'+', 	soma);
-	afd.add_transition(soma, 			'|', 	somaDeCompasso);
-	afd.add_transition(0, 				'-', 	subtracao);
+	afd.add_transition(0, 		'/', 	TK_SLASH);
+	afd.add_transition(0, 		'+', 	TK_SUM);
+	afd.add_transition(TK_SUM, 	'|', 	TK_COMPASSUM);
+	afd.add_transition(0, 		'-', 	TK_SUB);
 	
-	afd.add_transition(0, 				'~', 	comentario);
+	afd.add_transition(0, 		'~', 	TK_COMMENT);
 	
 	// Transições de indentificador
 	for(char c='a'; c<='z'; c++) {
-		afd.add_transition(0, c, sIdentificador);
-		afd.add_transition(sIdentificador, c, sIdentificador);
+		afd.add_transition(0, c, TK_IDENTIFIER);
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
 	}
 	for(char c='A'; c<='Z'; c++) {
-		afd.add_transition(0, c, sIdentificador);
-		afd.add_transition(sIdentificador, c, sIdentificador);
+		afd.add_transition(0, c, TK_IDENTIFIER);
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
 	}
 	
 	// Transições de identificador e numeral
 	for(char c='0'; c<='9'; c++) {
-		afd.add_transition(sIdentificador, c, sIdentificador);
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
 		
-		afd.add_transition(0, c, sNumero);
-		afd.add_transition(sNumero, c, sNumero);
+		afd.add_transition(0, c, TK_NUMBER);
+		afd.add_transition(TK_NUMBER, c, TK_NUMBER);
 	}
 	// =============================================
 	
@@ -101,10 +101,11 @@ lexical::lexical() {
 
 // =============== REALIZA ANÁLISE DE ALFABETO E REMOÇÃO DE CONMENTÁRIOS ===============
 void lexical::analiseCaracteres() {
-	regex alfabeto("[\\-*(a-z)*(A-Z)*(0-9)*\\s*\\t*\\,*\\.*\\;*\\\"*\\:*\\~*\\|*\\\\*\\+*\\/*\\=*\\~*]*");
+	regex alfabeto("[\\-*(a-z)*(A-Z)*(0-9)*\\s*\\t*\\,*\\.*\\;*\\\"*\\:*\\|*\\\\*\\+*\\/*\\=*\\~*]*");
 	int linhaAnalise = 1, marcador = 1;
 	string umCaracter;
 	size_t posicao;
+	erro = false;
 	
 	// abre o arquivo com código fonte
 	sourceCode.open(original);
@@ -125,8 +126,9 @@ void lexical::analiseCaracteres() {
 			umCaracter = linhaInteira.at(posicao);
 			
 			if(!regex_match(umCaracter, alfabeto)) {
-				cout << "\n" << "========= Caracter não reconhecido na linha " << linhaAnalise;
+				cout << "Caracter não reconhecido na linha " << linhaAnalise;
 				cout << " (" << umCaracter << ")" << endl;
+				erro = true;
 			}
 			
 			if(!umCaracter.compare("~")) {
@@ -142,7 +144,12 @@ void lexical::analiseCaracteres() {
 		linhaAnalise++;		
 	}
 	
-	cout << "Fim - análise do alfabeto\n\n" << endl;
+	cout << "Fim - análise do alfabeto\n" << endl;
+	
+	if(erro) {
+		cout << "Erro(s) encontrado(s) na análise do alfabeto." << endl;
+		exit(0);
+	}
 	
 	// fecha arquivo e termina parte de análise do alfabeto
 	sourceCode.close();
@@ -156,6 +163,8 @@ void lexical::todosTokens(){
 	
 	sourceCode.open(arquivo);
 	
+	cout << "Início - tokenização" << endl;
+	
 	// Pega linha por linha
 	while(getline(sourceCode, linhaInteira)) {
 		coluna = 0;
@@ -165,7 +174,7 @@ void lexical::todosTokens(){
 		
 		// Não considera nova linha com \s ou \t
 		if(tamanhoString <= 0) {
-			Token = {novaLinha, "\n", linha, 0};
+			Token = {TK_NEWLINE, "\n", linha, 0};
 			tabelaDeSimbolos.push_back(Token);
 		} else {
 			stringstream strs(linhaInteira);
@@ -180,10 +189,32 @@ void lexical::todosTokens(){
 		}
 	}
 	
+	geraArquivoToken();
+	
 	// Print de todos tokens
+/*	int controlaLinha = 0;
 	list<token>::iterator receptor;
-	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) 
-		cout << receptor->valor;
+	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+		if(controlaLinha != receptor->linha) {
+			cout << "\n";
+			controlaLinha = receptor->linha;
+		}
+		
+		if(receptor->tipo == TK_EMPTY) {
+			erro = true;
+			cout << receptor->valor << " ";
+		}
+		else if(receptor->tipo != TK_EOF)
+			cout << nomeToken(receptor->tipo) << " ";
+	}
+	cout << "\n";
+	
+	if(erro) {
+		cout << "Erro(s) encontrado(s) na tokenização." << endl;
+		exit(0);
+	}
+*/		
+	cout << "Fim - tokenização" << endl;
 	
 	sourceCode.close();
 }
@@ -198,18 +229,18 @@ token lexical::proximoToken() {
 /*
 	regex doublePipe("\\|{2}");
 	if(regex_match(palavra, doublePipe))
-		return trabalhado = {fimDeSecao, "fimDeSecao: ||", linha, coluna};
+		return trabalhado = {TK_DPIPE, "fimDeSecao: ||", linha, coluna};
 
 	// Verificação de pipe unico: |
 	regex singlePipe("\\|{1}");
 	if(regex_match(palavra, singlePipe))
-		return trabalhado = {fimDeCompasso, "fimDeCompasso: |", linha, coluna};
+		return trabalhado = {TK_SPIPE, "fimDeCompasso: |", linha, coluna};
 */		
 	//Verifica se é início ou fim de ritornelo
 	if(!palavra.compare("|:"))
-		return trabalhado = {comecoDeRepeticao, "|:", linha, coluna};
+		return trabalhado = {TK_PIPEDDOT, "|:", linha, coluna};
 	else if(!palavra.compare(":|"))
-		return trabalhado = {fimDeRepeticao, ":|", linha, coluna};
+		return trabalhado = {TK_DDOTPIPE, ":|", linha, coluna};
 
 	// ====================================================
 
@@ -221,7 +252,7 @@ token lexical::proximoToken() {
 		return reconheceEscopo();
 	
 	// Verificação de tipo de reservado seguido de espaço
-	regex tiposReservadas("(violin|viola|cello|numInt|numFrac|ritornelo){1}");
+	regex tiposReservadas("(violin|viola|cello|numInt|numFrac){1}");
 	if(regex_match(palavra, tiposReservadas))
 		return reconheceTipoReservado();
 
@@ -229,18 +260,10 @@ token lexical::proximoToken() {
 	size_t onde = palavra.find(":");
 	if(onde!=string::npos) {
 		string reservada = palavra.substr(0, onde);
-		regex reservadosComDoisPontos("(key|time|bpm|title|subtitle|compositor|copyright){1}");
 		
-		if(regex_match(reservada, reservadosComDoisPontos)) {
-			trabalhado = reconheceReservadoComDoisPontos(reservada);
-			tabelaDeSimbolos.push_back(trabalhado);
-		} else {
-			coluna = onde;
-			cout << "Token não reconhecido - Reservado com dois pontos (" << linha << "): " << palavra << endl;
-			trabalhado = {vazio, "Token não reconhecido (Reservado com dois pontos): "+reservada, linha, coluna};
-			tabelaDeSimbolos.push_back(trabalhado);
-		}
-		
+		trabalhado = reconheceReservadoComDoisPontos(reservada);
+		tabelaDeSimbolos.push_back(trabalhado);
+
 		// Continua verificação na falta de espaço após palavra reservada
 		palavra = palavra.substr(onde);
 	}
@@ -269,68 +292,130 @@ token lexical::proximoToken() {
 	}
 	
 	if(!lexema.compare("$"))
-		return trabalhado = {fimDaLinha, "\n", linha, coluna};
+		return trabalhado = {TK_EOF, "\n", linha, coluna};
 	else {
+		// No caso de haver algo na string, significa que não foi reconhecido
 		palavra.pop_back();		
 		cout << "Token não reconhecido - final (" << linha << "): " << palavra << endl;
-		return trabalhado = {vazio, "erro - final: "+palavra, linha, coluna};
+		return trabalhado = {TK_EMPTY, "UNRECOGNIZED ("+palavra+")", linha, coluna};
 	}
 }
 
 // =============== RECONHECIMENTO DE ESCOPO ===============
 token lexical::reconheceEscopo() {
 	if(!palavra.compare("\\instruments")) 
-		return reconhecido = {instrumentos, "\\instruments", linha, coluna};
+		return reconhecido = {TK_INSTRUMENTS, "\\instruments", linha, coluna};
 	else if(!palavra.compare("\\setup")) 
-		return reconhecido = {setup, "\\setup", linha, coluna};
+		return reconhecido = {TK_SETUP, "\\setup", linha, coluna};
 	else if(!palavra.compare("\\author")) 
-		return reconhecido = {autor, "\\author", linha, coluna};
+		return reconhecido = {TK_AUTHOR, "\\author", linha, coluna};
 	else if(!palavra.compare("\\sheetmusic")) 
-		return reconhecido = {partitura, "\\sheetmusic", linha, coluna};
+		return reconhecido = {TK_SHEETMUSIC, "\\sheetmusic", linha, coluna};
 	else {
-		cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
-		return reconhecido = {vazio, "erro - escopo", linha, coluna};
+		// Recuperação de erros - escopo
+		if(palavra.at(1) == 'i') {
+			cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
+			cout << "Tente \\instruments" << endl;
+		} else if(palavra.at(1) == 'a') {
+			cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
+			cout << "Tente \\author" << endl;
+		} else if(palavra.at(1) == 's') {
+			cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
+			cout << "Tente \\setup ou \\sheetmusic" << endl;
+		}
+		return reconhecido = {TK_EMPTY, "UNRECOGNIZED ("+palavra+")", linha, coluna};
 	}
 }
 
 // =============== RECONHECIMENTO DE TIPO RESERVADO SIMPLES ===============
 token lexical::reconheceTipoReservado() {
 	if(!palavra.compare("violin"))
-		return reconhecido = {sViolin , "violin", linha, coluna};
+		return reconhecido = {TK_S_VIOLIN , "violin", linha, coluna};
 	else if(!palavra.compare("viola"))
-		return reconhecido = {sViola , "viola", linha, coluna};
+		return reconhecido = {TK_S_VIOLA , "viola", linha, coluna};
 	else if(!palavra.compare("cello"))
-		return reconhecido = {sCello , "cello", linha, coluna};
+		return reconhecido = {TK_S_CELLO , "cello", linha, coluna};
 	else if(!palavra.compare("numInt"))
-		return reconhecido = {sInteiro , "numInt", linha, coluna};
+		return reconhecido = {TK_T_INT , "numInt", linha, coluna};
 	else if(!palavra.compare("numFrac"))
-		return reconhecido = {sFracional , "numFrac", linha, coluna};
+		return reconhecido = {TK_T_FRAC , "numFrac", linha, coluna};
 	else {
 		cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
-		return reconhecido = {vazio, "erro - reservado", linha, coluna};
+		return reconhecido = {TK_EMPTY, "erro - reservado", linha, coluna};
 	}
 }
 
 // =============== RECONHECIMENTO DE TIPO RESERVADO COM DOIS PONTOS ===============
 token lexical::reconheceReservadoComDoisPontos(string reservada) {
 	if(!reservada.compare("key"))
-		return reconhecido = {chave, "key", linha, coluna};
+		return reconhecido = {TK_KEY, "key", linha, coluna};
 	else if(!reservada.compare("time"))
-		return reconhecido = {tempo, "time", linha, coluna};
+		return reconhecido = {TK_TIME, "time", linha, coluna};
 	else if(!reservada.compare("bpm"))
-		return reconhecido = {sBpm, "bpm", linha, coluna};
+		return reconhecido = {TK_BPM, "bpm", linha, coluna};
 	else if(!reservada.compare("title"))
-		return reconhecido = {titulo, "title", linha, coluna};
+		return reconhecido = {TK_TITLE, "title", linha, coluna};
 	else if(!reservada.compare("subtitle"))
-		return reconhecido = {subtitulo, "subtitle", linha, coluna};
+		return reconhecido = {TK_SUBTITLE, "subtitle", linha, coluna};
 	else if(!reservada.compare("compositor"))
-		return reconhecido = {sCompositor, "compositor", linha, coluna};
+		return reconhecido = {TK_COMPOSITOR, "compositor", linha, coluna};
 	else if(!reservada.compare("copyright"))
-		return reconhecido = {direitos, "copyright", linha, coluna};
+		return reconhecido = {TK_COPYRIGHT, "copyright", linha, coluna};
 	else {
+		// Recuperação de erros - tipo reservado com dois pontos
+		regex tilte("[ilte]{4,}");
+		if(regex_match(reservada, tilte)) {
+			cout << "Provável erro de escrita em: "+reservada+" (" << linha << "). Reconhecendo como: title" << endl;
+			return reconhecido = {TK_TITLE, "title", linha, coluna};
+		}
+		
+		regex subtilte("[iltesub]{7,}");
+		if(regex_match(reservada, subtilte)) {
+			cout << "Provável erro de escrita em: "+reservada+" (" << linha << "). Reconhecendo como: subtitle" << endl;
+			return reconhecido = {TK_SUBTITLE, "subtitle", linha, coluna};
+		}
+		
+		regex compoistor("[compsitr]{8,}");
+		if(regex_match(reservada, compoistor)) {
+			cout << "Provável erro de escrita em: "+reservada+" (" << linha << "). Reconhecendo como: compositor" << endl;
+			return reconhecido = {TK_COMPOSITOR, "compositor", linha, coluna};
+		}
+		
+		regex copyrigth("[copyrigth]{8,}");
+		if(regex_match(reservada, copyrigth)) {
+			cout << "Provável erro de escrita em: "+reservada+" (" << linha << "). Reconhecendo como: copyright" << endl;
+			return reconhecido = {TK_COPYRIGHT, "copyright", linha, coluna};
+		}
+		
 		cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
-		return reconhecido = {vazio, "erro - dois pontos", linha, coluna};
+		return reconhecido = {TK_EMPTY, "erro - dois pontos", linha, coluna};
 	}
+}
+
+// =============== GERA ARQUIVO COM TOKENS (APENAS PARA ANÁLISE) ===============
+void lexical::geraArquivoToken() {
+	
+	ofstream arquivoToken;
+	arquivoToken.open("TK_"+original);
+	
+	// Print de todos tokens
+	int controlaLinha = 0;
+	list<token>::iterator receptor;
+	
+	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+	
+		if(controlaLinha != receptor->linha) {
+			arquivoToken << "\n";
+			controlaLinha = receptor->linha;
+		}
+		
+		if(receptor->tipo == TK_EMPTY)
+			arquivoToken << receptor->valor << "\t";
+		else if(receptor->tipo != TK_EOF)
+			arquivoToken << nomeToken(receptor->tipo) << "\t";
+	}
+	
+	arquivoToken.close();
 }
 
 // =============== CALCULA TAMANHO DO ARQUIVO ===============
@@ -339,5 +424,5 @@ long lexical::GetFileSize(string filename) {
 	ifstream is;
 	is.open(filename.c_str(), ios::binary);
 	is.seekg(0, ios::end);
-	return is.tellg();    
+	return is.tellg();
 }

@@ -1,9 +1,4 @@
-	title:"Quando Buscamos"|
-	~ what the fork ~
-	subtitle: "hey" |
-	~ hey
-	there
-	whats
-	up ~
-
-	\author
+subtilte: "quando"|
+tilte: "hey" |
+\intruments
+compsitor:

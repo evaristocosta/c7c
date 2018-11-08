@@ -24,8 +24,9 @@ public:
 	token reconheceTipoReservado();
 	token reconheceReservadoComDoisPontos(string);
 	
-	// Tamanho do arquivo
-	long GetFileSize(string filename);
+	// Manipulação de arquivo
+	long GetFileSize(string);
+	void geraArquivoToken();
 	
 private:
 	// Suporte de arquivo
@@ -47,6 +48,7 @@ private:
 	int linha,
 		coluna;
 		
+	bool erro;	
 	long tamanhoDoArquivo;
 };
 
