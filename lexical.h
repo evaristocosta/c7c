@@ -2,9 +2,9 @@
 #define LEXICAL_H
 
 #include <fstream>
-#include <list>
+//#include <list>
 
-#include "token.h"
+//#include "token.h"
 #include "DFA.h"
 
 class lexical {
@@ -28,6 +28,9 @@ public:
 	long GetFileSize(string);
 	void geraArquivoToken();
 	
+	// Lista com tokens	
+	list<token> tabelaDeSimbolos;
+	
 private:
 	// Suporte de arquivo
 	ifstream sourceCode;
@@ -37,9 +40,6 @@ private:
 	string original, arquivo, 	// Nome dos arquivos
 		linhaInteira,		// Linha inteira separada de getline
 		palavra;			// String de manipulação
-		
-	// Lista com tokens	
-	list<token> tabelaDeSimbolos;
 	
 	// Token de trabalho nas funções de reconhecimento
 	token reconhecido;

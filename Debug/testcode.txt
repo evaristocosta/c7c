@@ -4,7 +4,7 @@
 	compositor: "Luciana Simora" |
 ||
 
-\istruments
+\instruments
 	violin v1 |
 	numFrac c = 0.5 |
 	numFrac sc = 0.25 |

@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) $(IntermediateDirectory)/parser.cpp$(ObjectSuffix) 
 
 
 
@@ -114,6 +114,14 @@ $(IntermediateDirectory)/DFA.cpp$(DependSuffix): DFA.cpp
 
 $(IntermediateDirectory)/DFA.cpp$(PreprocessSuffix): DFA.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/DFA.cpp$(PreprocessSuffix) DFA.cpp
+
+$(IntermediateDirectory)/parser.cpp$(ObjectSuffix): parser.cpp $(IntermediateDirectory)/parser.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/parser.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/parser.cpp$(DependSuffix): parser.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/parser.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/parser.cpp$(DependSuffix) -MM parser.cpp
+
+$(IntermediateDirectory)/parser.cpp$(PreprocessSuffix): parser.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/parser.cpp$(PreprocessSuffix) parser.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

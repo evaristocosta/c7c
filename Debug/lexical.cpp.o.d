@@ -1,7 +1,5 @@
-Debug/lexical.cpp.o: lexical.cpp lexical.h token.h DFA.h
+Debug/lexical.cpp.o: lexical.cpp c7c.h DFA.h
 
-lexical.h:
-
-token.h:
+c7c.h:
 
 DFA.h:

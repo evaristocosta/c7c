@@ -1,10 +1,4 @@
-#include <iostream>
-#include <regex>
-#include <sstream>
-
-using namespace std;
-
-#include "lexical.h"
+#include "c7c.h"
 
 // Definição do autômato
 DFA<char> afd(0, false);
@@ -24,72 +18,8 @@ lexical::lexical() {
 	// Realiza análise de alfabeto e remove comentários
 	analiseCaracteres();
 	
-	// =============== CONSTRUÇÃO DO AFD ===============
-	afd.add_state(0, false);
-
-	// Estados finais
-	afd.add_state(TK_NUMBER, 	true);
-	afd.add_state(TK_IDENTIFIER,true);
-	
-	afd.add_state(TK_DPIPE, 	true);
-	afd.add_state(TK_SPIPE, 	true);
-	afd.add_state(TK_COMMA, 	true);
-	afd.add_state(TK_DOT, 		true);
-	afd.add_state(TK_PIPEDDOT, 	true);
-	afd.add_state(TK_DDOTPIPE, 	true);
-	
-	afd.add_state(TK_EQUAL, 	true);
-	afd.add_state(TK_DDOT, 		true);
-	afd.add_state(TK_DQUOTE, 	true);
-	
-	afd.add_state(TK_SLASH, 	true);
-	afd.add_state(TK_SUM, 		true);
-	afd.add_state(TK_COMPASSUM, true);
-	afd.add_state(TK_SUB, 		true);
-	
-	afd.add_state(TK_COMMENT, 	true);
-	
-	// Transições de pontuação
-	afd.add_transition(0, 		'|', 	TK_SPIPE);
-	afd.add_transition(TK_SPIPE,'|', 	TK_DPIPE);
-	afd.add_transition(TK_SPIPE,':', 	TK_PIPEDDOT);
-		
-	afd.add_transition(0, 		',', 	TK_COMMA);
-	afd.add_transition(0, 		'.', 	TK_DOT);
-		
-	afd.add_transition(0, 		'=', 	TK_EQUAL);
-		
-	afd.add_transition(0, 		':', 	TK_DDOT);
-	afd.add_transition(TK_DDOT, '|', 	TK_DDOTPIPE);
-		
-	afd.add_transition(0, 		'\"',	TK_DQUOTE);
-		
-	afd.add_transition(0, 		'/', 	TK_SLASH);
-	afd.add_transition(0, 		'+', 	TK_SUM);
-	afd.add_transition(TK_SUM, 	'|', 	TK_COMPASSUM);
-	afd.add_transition(0, 		'-', 	TK_SUB);
-	
-	afd.add_transition(0, 		'~', 	TK_COMMENT);
-	
-	// Transições de indentificador
-	for(char c='a'; c<='z'; c++) {
-		afd.add_transition(0, c, TK_IDENTIFIER);
-		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
-	}
-	for(char c='A'; c<='Z'; c++) {
-		afd.add_transition(0, c, TK_IDENTIFIER);
-		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
-	}
-	
-	// Transições de identificador e numeral
-	for(char c='0'; c<='9'; c++) {
-		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
-		
-		afd.add_transition(0, c, TK_NUMBER);
-		afd.add_transition(TK_NUMBER, c, TK_NUMBER);
-	}
-	// =============================================
-	
+	// Construção do AFD
+	constroeAFD();
 	
 	// Realiza a tokenização
 	todosTokens();
@@ -154,6 +84,73 @@ void lexical::analiseCaracteres() {
 	// fecha arquivo e termina parte de análise do alfabeto
 	sourceCode.close();
 	newSource.close();
+}
+
+// =============== CONSTRUÇÃO DO AFD ===============
+void lexical::constroeAFD() {
+	afd.add_state(0, false);
+
+	// Estados finais
+	afd.add_state(TK_NUMBER, 	true);
+	afd.add_state(TK_IDENTIFIER,true);
+	
+	afd.add_state(TK_DPIPE, 	true);
+	afd.add_state(TK_SPIPE, 	true);
+	afd.add_state(TK_COMMA, 	true);
+	afd.add_state(TK_DOT, 		true);
+	afd.add_state(TK_PIPEDDOT, 	true);
+	afd.add_state(TK_DDOTPIPE, 	true);
+	
+	afd.add_state(TK_EQUAL, 	true);
+	afd.add_state(TK_DDOT, 		true);
+	afd.add_state(TK_DQUOTE, 	true);
+	
+	afd.add_state(TK_SLASH, 	true);
+	afd.add_state(TK_SUM, 		true);
+	afd.add_state(TK_COMPASSUM, true);
+	afd.add_state(TK_SUB, 		true);
+	
+	afd.add_state(TK_COMMENT, 	true);
+	
+	// Transições de pontuação
+	afd.add_transition(0, 		'|', 	TK_SPIPE);
+	afd.add_transition(TK_SPIPE,'|', 	TK_DPIPE);
+	afd.add_transition(TK_SPIPE,':', 	TK_PIPEDDOT);
+		
+	afd.add_transition(0, 		',', 	TK_COMMA);
+	afd.add_transition(0, 		'.', 	TK_DOT);
+		
+	afd.add_transition(0, 		'=', 	TK_EQUAL);
+		
+	afd.add_transition(0, 		':', 	TK_DDOT);
+	afd.add_transition(TK_DDOT, '|', 	TK_DDOTPIPE);
+		
+	afd.add_transition(0, 		'\"',	TK_DQUOTE);
+		
+	afd.add_transition(0, 		'/', 	TK_SLASH);
+	afd.add_transition(0, 		'+', 	TK_SUM);
+	afd.add_transition(TK_SUM, 	'|', 	TK_COMPASSUM);
+	afd.add_transition(0, 		'-', 	TK_SUB);
+	
+	afd.add_transition(0, 		'~', 	TK_COMMENT);
+	
+	// Transições de indentificador
+	for(char c='a'; c<='z'; c++) {
+		afd.add_transition(0, c, TK_IDENTIFIER);
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
+	}
+	for(char c='A'; c<='Z'; c++) {
+		afd.add_transition(0, c, TK_IDENTIFIER);
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
+	}
+	
+	// Transições de identificador e numeral
+	for(char c='0'; c<='9'; c++) {
+		afd.add_transition(TK_IDENTIFIER, c, TK_IDENTIFIER);
+		
+		afd.add_transition(0, c, TK_NUMBER);
+		afd.add_transition(TK_NUMBER, c, TK_NUMBER);
+	}
 }
 
 // =============== GERENCIAMENTO DE ADIÇÃO DE TOKENS ===============

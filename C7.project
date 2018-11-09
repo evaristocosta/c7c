@@ -99,5 +99,8 @@
     <File Name="token.h"/>
     <File Name="DFA.cpp"/>
     <File Name="DFA.h"/>
+    <File Name="parser.cpp"/>
+    <File Name="parser.h"/>
+    <File Name="c7c.h"/>
   </VirtualDirectory>
 </CodeLite_Project>

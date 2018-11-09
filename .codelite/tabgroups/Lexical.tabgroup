@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tabgroup Name="/home/lucas/Documentos/UTFPR/Compiladores/C7/.codelite/tabgroups/Lexical">
+  <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/.codelite/tabgroups/Lexical" Name="m_TabgroupName"/>
+  <TabInfoArray Name="TabInfoArray">
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="11" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="102"/>
+        <IntVectorItem Value="304"/>
+        <IntVectorItem Value="330"/>
+        <IntVectorItem Value="395"/>
+        <IntVectorItem Value="422"/>
+      </IntVector>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="6" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/token.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/DFA.h" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/DFA.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+  </TabInfoArray>
+</Tabgroup>
