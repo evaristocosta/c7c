@@ -95,12 +95,9 @@
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
     <File Name="lexical.cpp"/>
-    <File Name="lexical.h"/>
-    <File Name="token.h"/>
     <File Name="DFA.cpp"/>
     <File Name="DFA.h"/>
     <File Name="parser.cpp"/>
-    <File Name="parser.h"/>
-    <File Name="c7c.h"/>
+    <File Name="c7c.hpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

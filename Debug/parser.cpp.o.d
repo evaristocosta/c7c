@@ -1,5 +1,5 @@
-Debug/parser.cpp.o: parser.cpp c7c.h DFA.h
+Debug/parser.cpp.o: parser.cpp c7c.hpp DFA.h
 
-c7c.h:
+c7c.hpp:
 
 DFA.h:

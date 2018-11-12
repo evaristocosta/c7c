@@ -1,4 +1,4 @@
-#include "c7c.h"
+#include "c7c.hpp"
 
 // Definição do autômato
 DFA<char> afd(0, false);

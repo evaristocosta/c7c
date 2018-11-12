@@ -1,4 +1,4 @@
-#include "c7c.h"
+#include "c7c.hpp"
 
 int main(int argc, char **argv)
 {
