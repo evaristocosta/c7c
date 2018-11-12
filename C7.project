@@ -99,5 +99,7 @@
     <File Name="DFA.h"/>
     <File Name="parser.cpp"/>
     <File Name="c7c.hpp"/>
+    <File Name="ngraph.hpp"/>
+    <File Name="set_ops.hpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

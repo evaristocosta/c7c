@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace">
-  <int Value="2" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/main.cpp" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
       <int Value="7" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.h" Name="FileName"/>
-      <int Value="24" Name="FirstVisibleLine"/>
-      <int Value="185" Name="CurrentLine"/>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
+      <int Value="8" Name="FirstVisibleLine"/>
+      <int Value="18" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
+      <int Value="68" Name="FirstVisibleLine"/>
+      <int Value="124" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds">
-        <IntVectorItem Value="17"/>
-        <IntVectorItem Value="72"/>
-        <IntVectorItem Value="113"/>
-        <IntVectorItem Value="127"/>
+        <IntVectorItem Value="73"/>
+        <IntVectorItem Value="187"/>
       </IntVector>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="11" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="89"/>
+      </IntVector>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/usr/include/c++/6/bits/stl_algo.h" Name="FileName"/>
+      <int Value="97" Name="FirstVisibleLine"/>
+      <int Value="103" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
     </TabInfo>
   </TabInfoArray>
   <SerializedObject Name="m_breakpoints">
-    <long Value="0" Name="Count"/>
+    <long Value="1" Name="Count"/>
+    <SerializedObject Name="Breakpoint0">
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="file"/>
+      <int Value="17" Name="lineno"/>
+      <wxString Value="" Name="function_name"/>
+      <wxString Value="" Name="memory_address"/>
+      <int Value="1" Name="bp_type"/>
+      <int Value="0" Name="watchpoint_type"/>
+      <wxString Value="" Name="watchpt_data"/>
+      <CData Name="commandlist"/>
+      <bool Value="0" Name="regex"/>
+      <bool Value="0" Name="is_temp"/>
+      <bool Value="1" Name="is_enabled"/>
+      <int Value="0" Name="ignore_number"/>
+      <wxString Value="" Name="conditions"/>
+      <int Value="0" Name="origin"/>
+    </SerializedObject>
   </SerializedObject>
 </Session>

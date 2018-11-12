@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "DFA.h"
+#include "ngraph.hpp"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ using namespace std;
 /* ======================================== */
 enum tiposToken {
 	// Iniciadores de escopo:
-	TK_INSTRUMENTS = 255,	// \instruments
+	TK_INSTRUMENTS = 301,	// \instruments
 	TK_SETUP,		// \setup
 	TK_AUTHOR,		// \author
 	TK_SHEETMUSIC,	// \sheetmusic
@@ -111,13 +112,19 @@ static string nomeToken(tiposToken tk) {
 	}
 }
 
-class token {
+struct token {
 	// Inicializa novo 'Token'.
-public:
-	enum tiposToken tipo = TK_EMPTY; // Um 'tipoToken' correspondente ao tipo do recém criado 'token'.
-	string valor = ""; // O 'String' valor do token. Os caracteres reais do lexema descritos.
-	int linha = 0, // O número da linha em que o token foi encontrado no código-fonte.
-		coluna = 0; // O número da coluna em que o token foi encontrado no código-fonte.
+//public:
+	enum tiposToken tipo; // Um 'tipoToken' correspondente ao tipo do recém criado 'token'.
+	string valor; // O 'String' valor do token. Os caracteres reais do lexema descritos.
+	int linha, // O número da linha em que o token foi encontrado no código-fonte.
+		coluna; // O número da coluna em que o token foi encontrado no código-fonte.
+		
+	// operator == overload - por ser um tipo especifico (https://en.cppreference.com/w/cpp/language/operators)
+	bool operator==(const token& rhs) {
+		return (tipo == rhs.tipo);
+		//return tie(tipo, valor, linha, coluna) == tie(rhs.tipo, rhs.valor, rhs.linha, rhs.coluna);
+	}
 };
 /* ======================================== */
 /* ======================================== */
@@ -178,11 +185,69 @@ private:
 
 /* ============== SINTÁTICO =============== */
 /* ======================================== */
+enum naoTerminais {
+	// Principal
+	NTS_PROG = 401,		// <programa principal>
+
+	// Seções
+	NTS_SAUTH,			// <secao autoria>
+	NTS_SINSTR, 		// <secao instrumentos>
+	NTS_SSETUP, 		// <secao configuracao>
+	NTS_SSHEET, 		// <secao partitura>
+
+	// Seção autoria
+	NTS_AUTH, 			// <autoria>
+	NTS_TITLE, 			// <title>
+	NTS_SUBTITLE, 		// <subtitle>
+	NTS_COMPOSITOR, 	// <compositor>
+	NTS_COPYRIGHT, 		// <copyright>
+
+	// Seção instrumentos
+	NTS_INSTR, 			// <instrumentos>
+	NTS_INSTRUMENT, 	// <instrumento>
+	NTS_TYPENUM, 		// <tipo numerico>
+	NTS_TYPEINT, 		// <inteiro>
+	NTS_TYPEFRAC, 		// <quebrado>
+
+	// Seção configuração
+	NTS_SETUP, 			// <configuracao>
+	NTS_KEY, 			// <key>
+	NTS_TIME, 			// <time>
+	NTS_BPM, 			// <bpm>
+
+	// Seção partitura
+	NTS_SHEET, 			// <partitura>
+	NTS_SHEETSTRUCT, 	// <estrutura>
+	// Repetição
+	NTS_REP, 			// <repeticao>
+	// Linhas musicais
+	NTS_MUSLINE, 		// <linha musical>
+	NTS_MUSLINES, 		// <linhas musicais>
+	// Compasso e notas
+	NTS_COMPASS, 		// <compassos>
+	NTS_NOTES, 			// <notas>
+	NTS_NOTE, 			// <nota>
+	NTS_HIGH, 			// <altura>
+	NTS_DURATION, 		// <duracao>
+	NTS_NOTESTRUCT, 	// <estrutura de nota>
+	NTS_FINALNOTE, 		// <nota final>
+
+	// Regras gerais
+	NTS_DIGIT, 			// <digito>
+	NTS_DIGITS, 		// <digitos>
+	NTS_NUMBER, 		// <numero>
+	NTS_FRAC, 			// <fracao>
+	NTS_CHAR, 			// <letra>
+	NTS_IDEN, 			// <identificador>
+	NTS_SYMBOL, 		// <simbolos>
+	NTS_STRING, 		// <string>
+	NTS_COMMENT 		// <comentario>
+};
 
 class parser {
 public:
 	//Construtor
-	parser();
+	parser() {};
 	
 	void sintatico(list<token>);
 	

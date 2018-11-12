@@ -9,7 +9,7 @@ lexical::lexical() {
 	linha = 0;
 	coluna = 0;
 	
-	original = "testcode.txt";
+	original = "line.txt";
 	tamanhoDoArquivo = GetFileSize(original);
 	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
 	

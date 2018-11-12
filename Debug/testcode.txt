@@ -1,6 +1,6 @@
 \author
 	tilte:"Quando Buscamos"|
-	sabtitle: "Violinos 1 e 2" |
+	subtitle: "Violinos 1 e 2" |
 	compositor: "Luciana Simora" |
 ||
 
