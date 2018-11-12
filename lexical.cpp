@@ -9,7 +9,7 @@ lexical::lexical() {
 	linha = 0;
 	coluna = 0;
 	
-	original = "line.txt";
+	original = "testcode.txt";
 	tamanhoDoArquivo = GetFileSize(original);
 	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
 	
@@ -190,7 +190,7 @@ void lexical::todosTokens(){
 	
 	// Print de todos tokens
 /*	int controlaLinha = 0;
-	list<token>::iterator receptor;
+	vector<token>::iterator receptor;
 	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
 		if(controlaLinha != receptor->linha) {
 			cout << "\n";
@@ -397,7 +397,7 @@ void lexical::geraArquivoToken() {
 	
 	// Print de todos tokens
 	int controlaLinha = 0;
-	list<token>::iterator receptor;
+	vector<token>::iterator receptor;
 	
 	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
 	

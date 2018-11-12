@@ -5,7 +5,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <list>
+//#include <list>
+#include <vector>
 #include <regex>
 #include <sstream>
 
@@ -157,7 +158,7 @@ public:
 	void geraArquivoToken();
 	
 	// Lista com tokens	
-	list<token> tabelaDeSimbolos;
+	vector<token> tabelaDeSimbolos;
 	
 private:
 	// Suporte de arquivo
@@ -249,7 +250,7 @@ public:
 	//Construtor
 	parser() {};
 	
-	void sintatico(list<token>);
+	void sintatico(vector<token>);
 	
 };
 /* ======================================== */
