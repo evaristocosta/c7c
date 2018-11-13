@@ -9,7 +9,7 @@ lexical::lexical() {
 	linha = 0;
 	coluna = 0;
 	
-	original = "testcode.txt";
+	original = "line.txt";
 	tamanhoDoArquivo = GetFileSize(original);
 	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
 	
@@ -110,7 +110,7 @@ void lexical::constroeAFD() {
 	afd.add_state(TK_COMPASSUM, true);
 	afd.add_state(TK_SUB, 		true);
 	
-	afd.add_state(TK_COMMENT, 	true);
+	//afd.add_state(TK_COMMENT, 	true);
 	
 	// Transições de pontuação
 	afd.add_transition(0, 		'|', 	TK_SPIPE);
@@ -132,7 +132,7 @@ void lexical::constroeAFD() {
 	afd.add_transition(TK_SUM, 	'|', 	TK_COMPASSUM);
 	afd.add_transition(0, 		'-', 	TK_SUB);
 	
-	afd.add_transition(0, 		'~', 	TK_COMMENT);
+	//afd.add_transition(0, 		'~', 	TK_COMMENT);
 	
 	// Transições de indentificador
 	for(char c='a'; c<='z'; c++) {
@@ -170,10 +170,7 @@ void lexical::todosTokens(){
 		tamanhoString = linhaInteira.length();
 		
 		// Não considera nova linha com \s ou \t
-		if(tamanhoString <= 0) {
-			Token = {TK_NEWLINE, "\n", linha, 0};
-			tabelaDeSimbolos.push_back(Token);
-		} else {
+		if(tamanhoString > 0) {
 			stringstream strs(linhaInteira);
 			
 			// Pega palavra por palavra
@@ -338,7 +335,7 @@ token lexical::reconheceTipoReservado() {
 		return reconhecido = {TK_T_FRAC , "numFrac", linha, coluna};
 	else {
 		cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
-		return reconhecido = {TK_EMPTY, "erro - reservado", linha, coluna};
+		return reconhecido = {TK_EMPTY, "UNRECOGNIZED ("+palavra+")", linha, coluna};
 	}
 }
 
@@ -385,7 +382,7 @@ token lexical::reconheceReservadoComDoisPontos(string reservada) {
 		}
 		
 		cout << "Token não reconhecido (" << linha << "): " << palavra << endl;
-		return reconhecido = {TK_EMPTY, "erro - dois pontos", linha, coluna};
+		return reconhecido = {TK_EMPTY, "UNRECOGNIZED ("+palavra+")", linha, coluna};
 	}
 }
 
@@ -396,7 +393,7 @@ void lexical::geraArquivoToken() {
 	arquivoToken.open("TK_"+original);
 	
 	// Print de todos tokens
-	int controlaLinha = 0;
+	int controlaLinha = 1;
 	vector<token>::iterator receptor;
 	
 	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
@@ -410,6 +407,8 @@ void lexical::geraArquivoToken() {
 			arquivoToken << receptor->valor << "\t";
 		else if(receptor->tipo != TK_EOF)
 			arquivoToken << nomeToken(receptor->tipo) << "\t";
+		else
+			arquivoToken << receptor->tipo << "\t";
 	}
 	
 	arquivoToken.close();

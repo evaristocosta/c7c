@@ -63,10 +63,6 @@ enum tiposToken {
 	TK_COMPASSUM,	// +|
 	TK_SUB,			// -
 	
-	// Comentario
-	TK_COMMENT,		// ~
-	
-	TK_NEWLINE,		// \n
 	
 	TK_EOF,			// Fim de palavra
 	TK_EMPTY		// Token não reconhecido
@@ -105,8 +101,8 @@ static string nomeToken(tiposToken tk) {
 		case TK_SUM:			return "TK_SUM";
 		case TK_COMPASSUM:		return "TK_COMPASSUM";
 		case TK_SUB:			return "TK_SUB";
-		case TK_COMMENT:		return "TK_COMMENT";
-		case TK_NEWLINE:		return "TK_NEWLINE";
+		//case TK_COMMENT:		return "TK_COMMENT";
+		//case TK_NEWLINE:		return "TK_NEWLINE";
 		case TK_EOF:			return "TK_EOF";
 		case TK_EMPTY:			return "TK_EMPTY";
 		default:				return "default";
