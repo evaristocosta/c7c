@@ -25,8 +25,11 @@ void parser::sintatico() {
 	}
 	try {
 		/* ================ SEÇÃO AUTORIA ================ */
+		// ponteiro pro comeco da pilha - facilita a escrita
+		tipo = &copiaTabela.front().tipo;
+		
 		// Pesquisa por \author
-		if(copiaTabela.front().tipo == TK_AUTHOR) {
+		if(*tipo == TK_AUTHOR) {
 			// insere na arvore
 			arvore.insert_edge(NTS_PROG, NTS_SAUTH);
 			arvore.insert_edge(NTS_SAUTH, TK_AUTHOR);
@@ -41,7 +44,7 @@ void parser::sintatico() {
 		autoria();
 		
 		// procura || do final
-		if(copiaTabela.front().tipo == TK_DPIPE) {
+		if(*tipo == TK_DPIPE) {
 			arvore.insert_edge(NTS_SAUTH, TK_DPIPE);
 			
 			copiaTabela.erase(copiaTabela.begin());
@@ -73,7 +76,6 @@ void parser::sintatico() {
 		} else 
 			throw 12;
 		/* ======================================== */
-		
 		
 		/* ================ SEÇÃO CONFIGURACAO ================ */
 		// Pesquisa \setup
@@ -145,7 +147,7 @@ void parser::sintatico() {
 				cout << "Falta || de \\setup" << endl;
 			break;
 			case 4:
-				cout << "Falta bloco de \\setup" << endl;
+				cout << "Falta bloco de \\sheetmusic" << endl;
 			break;
 			case 14:
 				cout << "Falta || de \\sheetmusic" << endl;
@@ -160,7 +162,7 @@ void parser::sintatico() {
 		exit(0);
 	}
 	
-	cout << arvore;
+//	cout << arvore;
 	
 }
 
@@ -177,16 +179,24 @@ void parser::autoria() {
 		// pesquisa declaracao
 		switch(copiaTabela.front().tipo) {
 			case TK_TITLE:
-				arvore.insert_edge(NTS_AUTH, TK_TITLE);
+				qualNo = NTS_TITLE;
+				arvore.insert_edge(NTS_AUTH, qualNo);
+				arvore.insert_edge(qualNo, TK_TITLE);
 			break;
 			case TK_SUBTITLE:
-				arvore.insert_edge(NTS_AUTH, TK_SUBTITLE);
+				qualNo = NTS_SUBTITLE;
+				arvore.insert_edge(NTS_AUTH, qualNo);
+				arvore.insert_edge(qualNo, TK_SUBTITLE);
 			break;
 			case TK_COMPOSITOR:
-				arvore.insert_edge(NTS_AUTH, TK_COMPOSITOR);
+				qualNo = NTS_COMPOSITOR;
+				arvore.insert_edge(NTS_AUTH, qualNo);
+				arvore.insert_edge(qualNo, TK_COMPOSITOR);
 			break;
 			case TK_COPYRIGHT:
-				arvore.insert_edge(NTS_AUTH, TK_COPYRIGHT);
+				qualNo = NTS_COPYRIGHT;
+				arvore.insert_edge(NTS_AUTH, qualNo);
+				arvore.insert_edge(qualNo, TK_COPYRIGHT);
 			break;
 			default:
 				erro = true;
@@ -197,7 +207,7 @@ void parser::autoria() {
 		
 		// pesquisa dois pontos
 		if(copiaTabela.front().tipo == TK_DDOT) {
-			arvore.insert_edge(NTS_AUTH, TK_DDOT);
+			arvore.insert_edge(qualNo, TK_DDOT);
 		} else {
 			cout << "Falta dois pontos depois da declaração" << endl;
 			localizaErro();
@@ -207,7 +217,7 @@ void parser::autoria() {
 			
 		// define string
 		if(copiaTabela.front().tipo == TK_DQUOTE) {
-			arvore.insert_edge(NTS_AUTH, NTS_STRING);
+			arvore.insert_edge(qualNo, NTS_STRING);
 			arvore.insert_edge(NTS_STRING, TK_DQUOTE);
 			stringC7();
 		} else {
@@ -219,7 +229,7 @@ void parser::autoria() {
 		
 		// procura |
 		if(copiaTabela.front().tipo == TK_SPIPE) {
-			arvore.insert_edge(NTS_AUTH, TK_DDOT);
+			arvore.insert_edge(qualNo, TK_DDOT);
 		} else {
 			cout << "Falta delimitador de linha" << endl;
 			localizaErro();
@@ -239,9 +249,9 @@ void parser::instrumentos() {
 	
 	while(copiaTabela.front().tipo != TK_DPIPE && !erro) {
 		// sempre comeca com tipo
-		if(copiaTabela.front().tipo == TK_S_VIOLIN 
-			|| copiaTabela.front().tipo == TK_S_VIOLA
-			|| copiaTabela.front().tipo == TK_S_CELLO) {
+		if((copiaTabela.front().tipo == TK_S_VIOLIN) 
+			|| (copiaTabela.front().tipo == TK_S_VIOLA)
+			|| (copiaTabela.front().tipo == TK_S_CELLO)) {
 				
 			tipoDeIdent = false;
 			
@@ -317,10 +327,90 @@ void parser::instrumentos() {
 
 /* ================== ABRE CONFIGURACAO ================== */
 void parser::configuracao() {
-	bool key, time, bpm;
-	key = time = bpm = false;
+	bool key, time;
+	key = time = false;
 	
-	
+	while(*tipo != TK_DPIPE && !erro) {
+		switch(*tipo) {
+			case TK_KEY:
+				key = true;
+				arvore.insert_edge(NTS_SETUP, TK_KEY);
+			break;
+			case TK_TIME:
+				time = true;
+				arvore.insert_edge(NTS_SETUP, TK_TIME);
+			break;
+			case TK_BPM:
+				arvore.insert_edge(NTS_SETUP, TK_BPM);
+			break;
+			default:
+				cout << "Especificador nao reconhecido" << endl;
+				localizaErro();
+		}
+		copiaTabela.erase(copiaTabela.begin());
+		
+		// pesquisa dois pontos
+		if(copiaTabela.front().tipo == TK_DDOT) {
+			arvore.insert_edge(NTS_SETUP, TK_DDOT);
+		} else {
+			cout << "Falta dois pontos depois da declaração" << endl;
+			localizaErro();
+		}
+		copiaTabela.erase(copiaTabela.begin());
+		
+		if(key && !time) {
+			if(*tipo == TK_IDENTIFIER) {
+				arvore.insert_edge(NTS_SETUP, TK_IDENTIFIER);
+				copiaTabela.erase(copiaTabela.begin());
+			} else {
+				cout << "Nota nao reconhecida" << endl;
+				localizaErro();
+			}
+			
+			// precisa tratar
+			if(!copiaTabela.front().valor.compare("#")) {
+				
+			} else if(!copiaTabela.front().valor.compare("b")) {
+				
+			}
+			
+			key = false;
+			
+		} else if(time && !key) {
+			arvore.insert_edge(NTS_SETUP, NTS_NUMBER);
+			if(numeros()) {
+				cout << "Fracionais não sao aceitos na formula de compasso" << endl;
+				localizaErro();
+			}
+			
+			if(*tipo == TK_SLASH) {
+				arvore.insert_edge(NTS_SETUP, TK_SLASH);
+			} else {
+				cout << "Falta / da formula" << endl;
+				localizaErro();
+			}
+			copiaTabela.erase(copiaTabela.begin());
+			
+			if(numeros()) {
+				cout << "Fracionais não sao aceitos na formula de compasso" << endl;
+				localizaErro();
+			}
+			
+			time = false;
+		} else {
+			arvore.insert_edge(NTS_SETUP, NTS_NUMBER);
+			numeros();
+		}
+
+		// procura |
+		if(copiaTabela.front().tipo == TK_SPIPE) {
+			arvore.insert_edge(NTS_SETUP, TK_DDOT);
+		} else {
+			cout << "Falta delimitador de linha" << endl;
+			localizaErro();
+		}
+		copiaTabela.erase(copiaTabela.begin());
+	}
 }
 
 /* ================== ABRE PARTITURA ================== */
@@ -328,6 +418,7 @@ void parser::partitura() {}
 
 
 // falta simbolos --- regex
+// todas strings no mesmo nó ---
 void parser::stringC7() {
 	copiaTabela.erase(copiaTabela.begin());
 	while(copiaTabela.front().tipo != TK_DQUOTE) {
@@ -362,6 +453,7 @@ bool parser::numeros() {
 		localizaErro();
 	}
 	
+	// verdadeiro se for frac
 	if(copiaTabela.front().tipo == TK_DOT && copiaTabela.at(1).tipo == TK_NUMBER) {
 		arvore.insert_edge(NTS_NUMBER, TK_DOT);
 		copiaTabela.erase(copiaTabela.begin());

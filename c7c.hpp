@@ -269,6 +269,9 @@ private:
 	stack<token> pilhaDeSimbolos;
 	NGraph::Graph arvore;
 	
+	tiposToken *tipo;
+	naoTerminais qualNo;
+	
 	bool erro;
 	
 };

@@ -5,9 +5,17 @@
 	compositor: "qweui"|
 	copyright: "copy " |
 ||
+
 \instruments
-	viola v2|
+	cello v2|
 	numFrac sc = 0|
 	viola violA |
 	numInt rq = 12|
+||
+
+\setup
+	key: A |
+	time: 4/4 |
+	bpm: 65 |
+	key: B |
 ||
