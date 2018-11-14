@@ -5,29 +5,33 @@
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/main.cpp" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="2" Name="FirstVisibleLine"/>
       <int Value="7" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
-      <int Value="74" Name="FirstVisibleLine"/>
-      <int Value="89" Name="CurrentLine"/>
+      <int Value="132" Name="FirstVisibleLine"/>
+      <int Value="322" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="127"/>
+        <IntVectorItem Value="167"/>
+        <IntVectorItem Value="236"/>
+      </IntVector>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
-      <int Value="120" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <int Value="254" Name="FirstVisibleLine"/>
+      <int Value="261" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
-      <int Value="270" Name="FirstVisibleLine"/>
-      <int Value="294" Name="CurrentLine"/>
+      <int Value="159" Name="FirstVisibleLine"/>
+      <int Value="162" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

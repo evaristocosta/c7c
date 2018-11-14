@@ -1,12 +1,13 @@
 \author
-
-subtilte: "quando"|
-tilte: "hey" |
+	title: "Quando 123  Buscamos"|
+	title:"heyhey" |
+	subtitle: "qhy" |
+	compositor: "qweui"|
+	copyright: "copy " |
 ||
 \instruments
-compsitor:
-
-
-
-
-
+	viola v2|
+	numFrac sc = 0|
+	viola violA |
+	numInt rq = 12|
+||

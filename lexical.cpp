@@ -185,10 +185,17 @@ void lexical::todosTokens(){
 	
 	geraArquivoToken();
 	
+	// insert de notas
+	//exertarNotas();
+	
 	// Print de todos tokens
-/*	int controlaLinha = 0;
+	int controlaLinha = 0;
 	vector<token>::iterator receptor;
 	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+		cout << nomeToken(receptor->tipo) << endl;
+		
+		
+		/*
 		if(controlaLinha != receptor->linha) {
 			cout << "\n";
 			controlaLinha = receptor->linha;
@@ -200,14 +207,15 @@ void lexical::todosTokens(){
 		}
 		else if(receptor->tipo != TK_EOF)
 			cout << nomeToken(receptor->tipo) << " ";
+		*/
 	}
-	cout << "\n";
+	//cout << "\n";
 	
 	if(erro) {
 		cout << "Erro(s) encontrado(s) na tokenização." << endl;
 		exit(0);
 	}
-*/		
+		
 	cout << "Fim - tokenização" << endl;
 	
 	sourceCode.close();
@@ -413,7 +421,37 @@ void lexical::geraArquivoToken() {
 	
 	arquivoToken.close();
 }
+/*
+void lexical::exertarNotas() {
+	token A = {TK_NUMBER, "1", 0, 0},
+		B = {TK_NUMBER, "2", 0, 0},
+		C = {TK_NUMBER, "3", 0, 0},
+		D = {TK_NUMBER, "4", 0, 0},
+		E = {TK_NUMBER, "5", 0, 0},
+		F = {TK_NUMBER, "6", 0, 0},
+		G = {TK_NUMBER, "7", 0, 0},
+		P = {TK_NUMBER, "0", 0, 0};
+	
+	size_t i = 0;
+	
+	for(i = 0; tabelaDeSimbolos.at(i).tipo != TK_INSTRUMENTS && i < tabelaDeSimbolos.size(); i++) {}
+	if(i == tabelaDeSimbolos.size()) {
+		//problema
+	}
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, A);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+2, B);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+3, C);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+4, D);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+5, E);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+6, F);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+7, G);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+8, P);
+	
+		
+}
 
+*/
 // =============== CALCULA TAMANHO DO ARQUIVO ===============
 //https://codereview.stackexchange.com/a/1407
 long lexical::GetFileSize(string filename) {

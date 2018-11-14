@@ -7,6 +7,7 @@
 #include <iostream>
 //#include <list>
 #include <vector>
+#include <stack>
 #include <regex>
 #include <sstream>
 
@@ -152,6 +153,7 @@ public:
 	// Manipulação de arquivo
 	long GetFileSize(string);
 	void geraArquivoToken();
+	//void exertarNotas();
 	
 	// Lista com tokens	
 	vector<token> tabelaDeSimbolos;
@@ -200,7 +202,7 @@ enum naoTerminais {
 	NTS_COPYRIGHT, 		// <copyright>
 
 	// Seção instrumentos
-	NTS_INSTR, 			// <instrumentos>
+	NTS_INSTRUMENTS,	// <instrumentos>
 	NTS_INSTRUMENT, 	// <instrumento>
 	NTS_TYPENUM, 		// <tipo numerico>
 	NTS_TYPEINT, 		// <inteiro>
@@ -244,9 +246,30 @@ enum naoTerminais {
 class parser {
 public:
 	//Construtor
-	parser() {};
+	parser(vector<token>);
 	
-	void sintatico(vector<token>);
+	
+	void sintatico();
+	
+	
+	void autoria();
+	void instrumentos();
+	void configuracao();
+	void partitura();
+	
+	
+	void stringC7();
+	bool numeros();
+	
+	
+	void localizaErro();
+	
+private:
+	vector<token> copiaTabela;
+	stack<token> pilhaDeSimbolos;
+	NGraph::Graph arvore;
+	
+	bool erro;
 	
 };
 /* ======================================== */
