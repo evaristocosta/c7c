@@ -192,33 +192,13 @@ void lexical::todosTokens(){
 		}
 	}
 	
-	geraArquivoToken();
+	geraArquivoToken(true, false, false, false);
 	
 	// insert de notas
 	//exertarNotas();
 	
 	// Print de todos tokens
-/*	int controlaLinha = 0;
-	vector<token>::iterator receptor;
-	for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
-		cout << nomeToken(receptor->tipo) << endl;
-		
-		
-		/*
-		if(controlaLinha != receptor->linha) {
-			cout << "\n";
-			controlaLinha = receptor->linha;
-		}
-		
-		if(receptor->tipo == TK_EMPTY) {
-			erro = true;
-			cout << receptor->valor << " ";
-		}
-		else if(receptor->tipo != TK_EOF)
-			cout << nomeToken(receptor->tipo) << " ";
-	
-	}*/
-	//cout << "\n";
+	printTokens(true);
 	
 	if(erro) {
 		cout << "Erro(s) encontrado(s) na tokenização." << endl;
@@ -233,20 +213,7 @@ void lexical::todosTokens(){
 token lexical::proximoToken() {
 	token trabalhado;
 	
-	/* ======== AREA DE VERIFICAÇÃO DE PIPES (RETURN DIRETO) =============
-	 * Com a implementação de autômatos, é possível remover essa parte. 
-	 * No entanto, isso pode acrescer em desempenho.  */
-	// Verificação de pipe duplo: ||
-/*
-	regex doublePipe("\\|{2}");
-	if(regex_match(palavra, doublePipe))
-		return trabalhado = {TK_DPIPE, "fimDeSecao: ||", linha, coluna, posicao};
-
-	// Verificação de pipe unico: |
-	regex singlePipe("\\|{1}");
-	if(regex_match(palavra, singlePipe))
-		return trabalhado = {TK_SPIPE, "fimDeCompasso: |", linha, coluna, posicao};
-*/		
+	/* ======== AREA DE VERIFICAÇÃO DE PIPES (RETURN DIRETO) ============= */
 	//Verifica se é início ou fim de ritornelo
 	if(!palavra.compare("|:"))
 		return trabalhado = {TK_PIPEDDOT, "|:", linha, coluna, posicao};
@@ -257,7 +224,6 @@ token lexical::proximoToken() {
 
 
 	// =============== VERIFICAÇÕES SIMPLES ==============
-	// Poderão permanecer, já que necessitam de \s p/ funcionar
 	// Verificação de escopo: 
 	if(palavra.at(0) == '\\') 
 		return reconheceEscopo();
@@ -405,7 +371,7 @@ token lexical::reconheceReservadoComDoisPontos(string reservada) {
 }
 
 // =============== GERA ARQUIVO COM TOKENS (APENAS PARA ANÁLISE) ===============
-void lexical::geraArquivoToken() {
+void lexical::geraArquivoToken(bool nomes, bool valores, bool colunas, bool posicoes) {
 	
 	ofstream arquivoToken;
 	arquivoToken.open("TK_"+original);
@@ -423,14 +389,46 @@ void lexical::geraArquivoToken() {
 		
 		if(receptor->tipo == TK_EMPTY)
 			arquivoToken << receptor->valor << "\t";
-		else if(receptor->tipo != TK_EOF)
-			arquivoToken << nomeToken(receptor->tipo) << "," << receptor->coluna << "\t";
-		else
-			arquivoToken << receptor->tipo << "\t";
+		else if(receptor->tipo != TK_EOF) {
+			if(nomes)
+				arquivoToken << nomeToken(receptor->tipo) << "\t";
+			
+			if(valores)
+				arquivoToken << receptor->valor << "\t";
+			
+			if(colunas)
+				arquivoToken << receptor->coluna << "\t";
+			
+			if(posicoes)
+				arquivoToken << receptor->posicao << "\t";
+		}
 	}
 	
 	arquivoToken.close();
 }
+
+void lexical::printTokens(bool imprime){
+	if(imprime) {
+		int controlaLinha = 0;
+		vector<token>::iterator receptor;
+		for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+			if(controlaLinha != receptor->linha) {
+				cout << "\n";
+				controlaLinha = receptor->linha;
+			}
+
+			if(receptor->tipo == TK_EMPTY) {
+				erro = true;
+				cout << receptor->valor << " ";
+			}
+			else if(receptor->tipo != TK_EOF)
+				cout << nomeToken(receptor->tipo) << " ";
+
+		}
+		cout << "\n";
+	}
+}
+
 /*
 void lexical::exertarNotas() {
 	token A = {TK_NUMBER, "1", 0, 0},
