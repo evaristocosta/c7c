@@ -1,5 +1,5 @@
 \author
-	title: "Quando 123  Buscamos"|
+	title: "qi Buscamos"|
 	title:"heyhey" |
 	subtitle: "qhy" |
 	compositor: "qweui"|
@@ -7,8 +7,8 @@
 ||
 
 \instruments
-	cello v2|
-	numFrac sc = 0|
+	cello v2 |
+	numFrac sc = 15.12|
 	viola violA |
 	numInt rq = 12|
 ||
@@ -16,6 +16,6 @@
 \setup
 	key: A |
 	time: 4/4 |
-	bpm: 6,5 |
+	bpm: 12 |
 	key: B |
 ||

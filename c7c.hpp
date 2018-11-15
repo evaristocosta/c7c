@@ -64,6 +64,11 @@ enum tiposToken {
 	TK_COMPASSUM,	// +|
 	TK_SUB,			// -
 	
+	// Outros símbolos aceitos
+	TK_DCOMMA,		// ;
+	TK_INVERTSLASH,	//  
+	TK_SHARP,		// #
+	
 	
 	TK_EOF,			// Fim de palavra
 	TK_EMPTY		// Token não reconhecido
@@ -104,6 +109,9 @@ static string nomeToken(tiposToken tk) {
 		case TK_SUB:			return "TK_SUB";
 		//case TK_COMMENT:		return "TK_COMMENT";
 		//case TK_NEWLINE:		return "TK_NEWLINE";
+		case TK_DCOMMA:			return "TK_DCOMMA";
+		case TK_INVERTSLASH:	return "TK_INVERTSLASH";
+		case TK_SHARP:			return "TK_SHARP";
 		case TK_EOF:			return "TK_EOF";
 		case TK_EMPTY:			return "TK_EMPTY";
 		default:				return "default";
@@ -116,12 +124,12 @@ struct token {
 	enum tiposToken tipo; // Um 'tipoToken' correspondente ao tipo do recém criado 'token'.
 	string valor; // O 'String' valor do token. Os caracteres reais do lexema descritos.
 	int linha, // O número da linha em que o token foi encontrado no código-fonte.
-		coluna; // O número da coluna em que o token foi encontrado no código-fonte.
+		coluna, // O número da coluna em que o token foi encontrado no código-fonte.
+		posicao;
 		
 	// operator == overload - por ser um tipo especifico (https://en.cppreference.com/w/cpp/language/operators)
 	bool operator==(const token& rhs) {
 		return (tipo == rhs.tipo);
-		//return tie(tipo, valor, linha, coluna) == tie(rhs.tipo, rhs.valor, rhs.linha, rhs.coluna);
 	}
 };
 /* ======================================== */
@@ -173,7 +181,8 @@ private:
 	
 	// Variáveis de linha e coluna
 	int linha,
-		coluna;
+		coluna,
+		posicao;
 		
 	bool erro;	
 	long tamanhoDoArquivo;
@@ -240,7 +249,6 @@ enum naoTerminais {
 	NTS_IDEN, 			// <identificador>
 	NTS_SYMBOL, 		// <simbolos>
 	NTS_STRING, 		// <string>
-	NTS_COMMENT 		// <comentario>
 };
 
 class parser {
@@ -270,6 +278,10 @@ private:
 	NGraph::Graph arvore;
 	
 	tiposToken *tipo;
+	int *posicao, 
+		contadorString = 0, 
+		contadorInstrumento = 0, 
+		contadorNumero = 0;
 	naoTerminais qualNo;
 	
 	bool erro;

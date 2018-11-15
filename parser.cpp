@@ -23,16 +23,18 @@ void parser::sintatico() {
 		}
 		++iterador;
 	}
+	
 	try {
 		/* ================ SEÇÃO AUTORIA ================ */
-		// ponteiro pro comeco da pilha - facilita a escrita
+		// ponteiros pro comeco da pilha - facilita a escrita
 		tipo = &copiaTabela.front().tipo;
+		posicao = &copiaTabela.front().posicao;
 		
 		// Pesquisa por \author
 		if(*tipo == TK_AUTHOR) {
 			// insere na arvore
 			arvore.insert_edge(NTS_PROG, NTS_SAUTH);
-			arvore.insert_edge(NTS_SAUTH, TK_AUTHOR);
+			arvore.insert_edge(NTS_SAUTH, *posicao);
 			arvore.insert_edge(NTS_SAUTH, NTS_AUTH);
 			
 			// remove da pilha
@@ -45,7 +47,7 @@ void parser::sintatico() {
 		
 		// procura || do final
 		if(*tipo == TK_DPIPE) {
-			arvore.insert_edge(NTS_SAUTH, TK_DPIPE);
+			arvore.insert_edge(NTS_SAUTH, *posicao);
 			
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
@@ -55,9 +57,9 @@ void parser::sintatico() {
 		
 		/* ================ SEÇÃO INSTRUMENTOS ================ */
 		// Pesquisa \instruments
-		if(copiaTabela.front().tipo == TK_INSTRUMENTS) {
+		if(*tipo == TK_INSTRUMENTS) {
 			arvore.insert_edge(NTS_PROG, NTS_SINSTR);
-			arvore.insert_edge(NTS_SINSTR, TK_INSTRUMENTS);
+			arvore.insert_edge(NTS_SINSTR, *posicao);
 			arvore.insert_edge(NTS_SINSTR, NTS_INSTRUMENTS);
 			
 			copiaTabela.erase(copiaTabela.begin());
@@ -69,8 +71,8 @@ void parser::sintatico() {
 		instrumentos();
 		
 		// procura || do instruments
-		if(copiaTabela.front().tipo == TK_DPIPE) {
-			arvore.insert_edge(NTS_SINSTR, TK_DPIPE);
+		if(*tipo == TK_DPIPE) {
+			arvore.insert_edge(NTS_SINSTR, *posicao);
 			
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
@@ -79,9 +81,9 @@ void parser::sintatico() {
 		
 		/* ================ SEÇÃO CONFIGURACAO ================ */
 		// Pesquisa \setup
-		if(copiaTabela.front().tipo == TK_SETUP) {
+		if(*tipo == TK_SETUP) {
 			arvore.insert_edge(NTS_PROG, NTS_SSETUP);
-			arvore.insert_edge(NTS_SSETUP, TK_SETUP);
+			arvore.insert_edge(NTS_SSETUP, *posicao);
 			arvore.insert_edge(NTS_SSETUP, NTS_SETUP);
 			
 			copiaTabela.erase(copiaTabela.begin());
@@ -93,8 +95,8 @@ void parser::sintatico() {
 		configuracao();
 		
 		// procura || do setup
-		if(copiaTabela.front().tipo == TK_DPIPE) {
-			arvore.insert_edge(NTS_SSETUP, TK_DPIPE);
+		if(*tipo == TK_DPIPE) {
+			arvore.insert_edge(NTS_SSETUP, *posicao);
 			
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
@@ -104,9 +106,9 @@ void parser::sintatico() {
 		
 		/* ================ SEÇÃO PARTITURA ================ */
 		// Pesquisa \sheetmusic
-		if(copiaTabela.front().tipo == TK_SHEETMUSIC) {
+		if(*tipo == TK_SHEETMUSIC) {
 			arvore.insert_edge(NTS_PROG, NTS_SSHEET);
-			arvore.insert_edge(NTS_SSHEET, TK_SHEETMUSIC);
+			arvore.insert_edge(NTS_SSHEET, *posicao);
 			arvore.insert_edge(NTS_SSHEET, NTS_SHEET);
 			
 			copiaTabela.erase(copiaTabela.begin());
@@ -118,8 +120,8 @@ void parser::sintatico() {
 		partitura();
 		
 		// procura || do setup
-		if(copiaTabela.front().tipo == TK_DPIPE) {
-			arvore.insert_edge(NTS_SSHEET, TK_DPIPE);
+		if(*tipo == TK_DPIPE) {
+			arvore.insert_edge(NTS_SSHEET, *posicao);
 			
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
@@ -153,16 +155,10 @@ void parser::sintatico() {
 				cout << "Falta || de \\sheetmusic" << endl;
 			break;
 		}
-		//localizaErro();
-		erro = true;
-	}
-	
-	if(erro) {
-		cout << "Existem erro(s) na sintática do código-fonte" << endl;
+		cout << "Existe(m) erro(s) na sintática do código-fonte" << endl;
 		exit(0);
 	}
 	
-//	cout << arvore;
 	
 }
 
@@ -171,74 +167,70 @@ void parser::autoria() {
 	erro = false;
 	
 	// caso nao tenha nada definido
-	if(copiaTabela.front().tipo == (TK_DPIPE|TK_INSTRUMENTS))
+	if(*tipo == (TK_DPIPE|TK_INSTRUMENTS))
 		return;
 	
 	// enquanto não acha fim do bloco	
-	while(copiaTabela.front().tipo != TK_DPIPE && !erro) {
+	while(*tipo != TK_DPIPE && !erro) {
 		// pesquisa declaracao
-		switch(copiaTabela.front().tipo) {
+		switch(*tipo) {
 			case TK_TITLE:
 				qualNo = NTS_TITLE;
 				arvore.insert_edge(NTS_AUTH, qualNo);
-				arvore.insert_edge(qualNo, TK_TITLE);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			case TK_SUBTITLE:
 				qualNo = NTS_SUBTITLE;
 				arvore.insert_edge(NTS_AUTH, qualNo);
-				arvore.insert_edge(qualNo, TK_SUBTITLE);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			case TK_COMPOSITOR:
 				qualNo = NTS_COMPOSITOR;
 				arvore.insert_edge(NTS_AUTH, qualNo);
-				arvore.insert_edge(qualNo, TK_COMPOSITOR);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			case TK_COPYRIGHT:
 				qualNo = NTS_COPYRIGHT;
 				arvore.insert_edge(NTS_AUTH, qualNo);
-				arvore.insert_edge(qualNo, TK_COPYRIGHT);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			default:
-				erro = true;
 				cout << "Falta declaracao de tipo" << endl;
 				localizaErro();
 		}
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// pesquisa dois pontos
-		if(copiaTabela.front().tipo == TK_DDOT) {
-			arvore.insert_edge(qualNo, TK_DDOT);
+		if(*tipo == TK_DDOT) {
+			arvore.insert_edge(qualNo, *posicao);
 		} else {
 			cout << "Falta dois pontos depois da declaração" << endl;
 			localizaErro();
-			erro = true;
 		}
 		copiaTabela.erase(copiaTabela.begin());
 			
 		// define string
-		if(copiaTabela.front().tipo == TK_DQUOTE) {
-			arvore.insert_edge(qualNo, NTS_STRING);
-			arvore.insert_edge(NTS_STRING, TK_DQUOTE);
+		if(*tipo == TK_DQUOTE) {
+			arvore.insert_edge(qualNo, NTS_STRING*10+contadorString);
+			arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
 			stringC7();
 		} else {
 			cout << "Falta inicio de string";
 			localizaErro();
-			erro = true;
 		}
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// procura |
-		if(copiaTabela.front().tipo == TK_SPIPE) {
-			arvore.insert_edge(qualNo, TK_DDOT);
+		if(*tipo == TK_SPIPE) {
+			arvore.insert_edge(qualNo, *posicao);
 		} else {
 			cout << "Falta delimitador de linha" << endl;
 			localizaErro();
-			erro = true;
 		}
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// caso especial
-		if(copiaTabela.front().tipo == TK_INSTRUMENTS) 
+		if(*tipo == TK_INSTRUMENTS) 
 			erro = true;
 	}
 }
@@ -247,51 +239,38 @@ void parser::autoria() {
 void parser::instrumentos() {
 	bool tipoDeIdent, fracional;
 	
-	while(copiaTabela.front().tipo != TK_DPIPE && !erro) {
+	while(*tipo != TK_DPIPE && !erro) {
+		
+		++contadorInstrumento;
+		int pos = (int)NTS_INSTRUMENT*100+contadorInstrumento;
+		arvore.insert_edge(NTS_INSTRUMENTS, pos);
+		
 		// sempre comeca com tipo
-		if((copiaTabela.front().tipo == TK_S_VIOLIN) 
-			|| (copiaTabela.front().tipo == TK_S_VIOLA)
-			|| (copiaTabela.front().tipo == TK_S_CELLO)) {
+		if((*tipo == TK_S_VIOLIN) 
+			|| (*tipo == TK_S_VIOLA)
+			|| (*tipo == TK_S_CELLO)) {
 				
 			tipoDeIdent = false;
 			
-			switch(copiaTabela.front().tipo) {
-				case TK_S_CELLO:
-					arvore.insert_edge(NTS_INSTRUMENTS, TK_S_CELLO);
-				break;
-				case TK_S_VIOLA:
-					arvore.insert_edge(NTS_INSTRUMENTS, TK_S_VIOLA);
-				break;
-				case TK_S_VIOLIN:
-					arvore.insert_edge(NTS_INSTRUMENTS, TK_S_VIOLIN);
-				break;
-			}
-			copiaTabela.erase(copiaTabela.begin());
-			
-		} else if(copiaTabela.front().tipo == TK_T_FRAC
-			|| copiaTabela.front().tipo == TK_T_INT) {
-			
+		} else if(*tipo == TK_T_FRAC) {
+			fracional = true;
 			tipoDeIdent = true;
 			
-			switch(copiaTabela.front().tipo) {
-				case TK_T_FRAC:
-					fracional = true;
-					arvore.insert_edge(NTS_INSTRUMENTS, TK_T_FRAC);
-				break;
-				case TK_T_INT:
-					fracional = false;
-					arvore.insert_edge(NTS_INSTRUMENTS, TK_T_INT);
-				break;
-			}
-			copiaTabela.erase(copiaTabela.begin());
-			
-		} else {
+		} else if(*tipo == TK_T_INT) {
+			fracional = false;
+			tipoDeIdent = true;
+		}else {
 			cout << "Tipo não reconhecido" << endl;
 			localizaErro();
 		}
 		
-		if(copiaTabela.front().tipo == TK_IDENTIFIER) {
-			arvore.insert_edge(NTS_INSTRUMENTS, TK_IDENTIFIER);
+		
+		arvore.insert_edge(pos, *posicao);
+		
+		copiaTabela.erase(copiaTabela.begin());
+		
+		if(*tipo == TK_IDENTIFIER) {
+			arvore.insert_edge(pos, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		} else {
 			cout << "Esperava-se um identificador" << endl;
@@ -299,15 +278,15 @@ void parser::instrumentos() {
 		}
 			
 		if(tipoDeIdent) {
-			if(copiaTabela.front().tipo == TK_EQUAL) {
-				arvore.insert_edge(NTS_INSTRUMENTS, TK_EQUAL);
+			if(*tipo == TK_EQUAL) {
+				arvore.insert_edge(pos, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
 			} else {
 				cout << "Falta atribuicao" << endl;
 				localizaErro();
 			}
 			
-			arvore.insert_edge(NTS_INSTRUMENTS, NTS_NUMBER);
+			arvore.insert_edge(pos, NTS_NUMBER);
 			
 			if(numeros() && !fracional) {
 				cout << "Declaracao de inteiro e atribuicao de fracional" << endl;
@@ -315,8 +294,8 @@ void parser::instrumentos() {
 			}
 		}
 		
-		if(copiaTabela.front().tipo == TK_SPIPE) {
-			arvore.insert_edge(NTS_INSTRUMENTS, TK_SPIPE);
+		if(*tipo == TK_SPIPE) {
+			arvore.insert_edge(pos, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		} else {
 			cout << "Falta fim de linha" << endl;
@@ -328,20 +307,27 @@ void parser::instrumentos() {
 /* ================== ABRE CONFIGURACAO ================== */
 void parser::configuracao() {
 	bool key, time;
-	key = time = false;
+	key = false;
+	time = false;
 	
-	while(*tipo != TK_DPIPE && !erro) {
+	while(*tipo != TK_DPIPE) {
 		switch(*tipo) {
 			case TK_KEY:
 				key = true;
-				arvore.insert_edge(NTS_SETUP, TK_KEY);
+				qualNo = NTS_KEY;
+				arvore.insert_edge(NTS_SETUP, qualNo);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			case TK_TIME:
 				time = true;
-				arvore.insert_edge(NTS_SETUP, TK_TIME);
+				qualNo = NTS_TIME;
+				arvore.insert_edge(NTS_SETUP, qualNo);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			case TK_BPM:
-				arvore.insert_edge(NTS_SETUP, TK_BPM);
+				qualNo = NTS_BPM;
+				arvore.insert_edge(NTS_SETUP, qualNo);
+				arvore.insert_edge(qualNo, *posicao);
 			break;
 			default:
 				cout << "Especificador nao reconhecido" << endl;
@@ -350,8 +336,8 @@ void parser::configuracao() {
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// pesquisa dois pontos
-		if(copiaTabela.front().tipo == TK_DDOT) {
-			arvore.insert_edge(NTS_SETUP, TK_DDOT);
+		if(*tipo == TK_DDOT) {
+			arvore.insert_edge(qualNo, *posicao);
 		} else {
 			cout << "Falta dois pontos depois da declaração" << endl;
 			localizaErro();
@@ -360,31 +346,30 @@ void parser::configuracao() {
 		
 		if(key && !time) {
 			if(*tipo == TK_IDENTIFIER) {
-				arvore.insert_edge(NTS_SETUP, TK_IDENTIFIER);
+				arvore.insert_edge(qualNo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
 			} else {
 				cout << "Nota nao reconhecida" << endl;
 				localizaErro();
 			}
 			
-			// precisa tratar
-			if(!copiaTabela.front().valor.compare("#")) {
-				
-			} else if(!copiaTabela.front().valor.compare("b")) {
-				
-			}
+			if(*tipo == TK_SHARP || !copiaTabela.front().valor.compare("b")) {
+				arvore.insert_edge(qualNo, *posicao);
+				copiaTabela.erase(copiaTabela.begin());
+			} 
 			
 			key = false;
 			
 		} else if(time && !key) {
-			arvore.insert_edge(NTS_SETUP, NTS_NUMBER);
+			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero+1);
+			
 			if(numeros()) {
 				cout << "Fracionais não sao aceitos na formula de compasso" << endl;
 				localizaErro();
 			}
 			
 			if(*tipo == TK_SLASH) {
-				arvore.insert_edge(NTS_SETUP, TK_SLASH);
+				arvore.insert_edge(qualNo, *posicao);
 			} else {
 				cout << "Falta / da formula" << endl;
 				localizaErro();
@@ -397,14 +382,15 @@ void parser::configuracao() {
 			}
 			
 			time = false;
+			
 		} else {
-			arvore.insert_edge(NTS_SETUP, NTS_NUMBER);
+			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero+1);
 			numeros();
 		}
 
 		// procura |
-		if(copiaTabela.front().tipo == TK_SPIPE) {
-			arvore.insert_edge(NTS_SETUP, TK_DDOT);
+		if(*tipo == TK_SPIPE) {
+			arvore.insert_edge(qualNo, *posicao);
 		} else {
 			cout << "Falta delimitador de linha" << endl;
 			localizaErro();
@@ -414,26 +400,21 @@ void parser::configuracao() {
 }
 
 /* ================== ABRE PARTITURA ================== */
-void parser::partitura() {}
+void parser::partitura() {
+	
+}
 
 
-// falta simbolos --- regex
-// todas strings no mesmo nó ---
 void parser::stringC7() {
 	copiaTabela.erase(copiaTabela.begin());
-	while(copiaTabela.front().tipo != TK_DQUOTE) {
-		if(copiaTabela.front().tipo == TK_IDENTIFIER) {
-			arvore.insert_edge(NTS_STRING, TK_IDENTIFIER);
+	++contadorString;
+	regex simbolos("[\\-*\\,*\\.*\\#*\\;*\\\"*\\:*\\|*\\\\*\\+*\\/*\\=*]*");
+	
+	while(*tipo != TK_DQUOTE) {
+		if(*tipo == TK_IDENTIFIER || *tipo == TK_NUMBER || regex_match(copiaTabela.front().valor, simbolos)) {
+			arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
-		} else if(copiaTabela.front().tipo == TK_NUMBER) {
-			arvore.insert_edge(NTS_STRING, TK_NUMBER);
-			copiaTabela.erase(copiaTabela.begin());
-		
-		// } else if() {
-
-		// }	
-		
 		} else {
 			cout << "Erro em string" << endl;
 			exit(0);
@@ -441,12 +422,14 @@ void parser::stringC7() {
 	}
 	
 	// se sai do while, entao achou "
-	arvore.insert_edge(NTS_STRING, TK_DQUOTE);
+	arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
 }
 
 bool parser::numeros() {
-	if(copiaTabela.front().tipo == TK_NUMBER) {
-		arvore.insert_edge(NTS_NUMBER, TK_NUMBER);
+	++contadorNumero;
+	
+	if(*tipo == TK_NUMBER) {
+		arvore.insert_edge(NTS_NUMBER*1000+contadorNumero, *posicao);
 		copiaTabela.erase(copiaTabela.begin());
 	} else {
 		cout << "Atribuicao invalida" << endl;
@@ -454,11 +437,11 @@ bool parser::numeros() {
 	}
 	
 	// verdadeiro se for frac
-	if(copiaTabela.front().tipo == TK_DOT && copiaTabela.at(1).tipo == TK_NUMBER) {
-		arvore.insert_edge(NTS_NUMBER, TK_DOT);
+	if(*tipo == TK_DOT && copiaTabela.at(1).tipo == TK_NUMBER) {
+		arvore.insert_edge(NTS_NUMBER*1000+contadorNumero, *posicao);
 		copiaTabela.erase(copiaTabela.begin());
 		
-		arvore.insert_edge(NTS_NUMBER, TK_NUMBER);
+		arvore.insert_edge(NTS_NUMBER*1000+contadorNumero, *posicao);
 		copiaTabela.erase(copiaTabela.begin());
 		return true;
 	} else
