@@ -157,11 +157,8 @@ void parser::sintatico() {
 				cout << "Falta || de \\sheetmusic" << endl;
 			break;
 		}
-		cout << "Existe(m) erro(s) na sintática do código-fonte" << endl;
-		exit(0);
+		localizaErro();
 	}
-	
-	
 }
 
 /* ================== ABRE AUTORIA ================== */
@@ -173,7 +170,7 @@ void parser::autoria() {
 		return;
 	
 	// enquanto não acha fim do bloco	
-	while(*tipo != TK_DPIPE && !erro) {
+	while(*tipo != TK_DPIPE) {
 		// pesquisa declaracao
 		switch(*tipo) {
 			case TK_TITLE:
@@ -233,7 +230,7 @@ void parser::autoria() {
 		
 		// caso especial
 		if(*tipo == TK_INSTRUMENTS) 
-			erro = true;
+			break;
 	}
 }
 
@@ -241,7 +238,7 @@ void parser::autoria() {
 void parser::instrumentos() {
 	bool tipoDeIdent, fracional;
 	
-	while(*tipo != TK_DPIPE && !erro) {
+	while(*tipo != TK_DPIPE) {
 		
 		++contadorInstrumento;
 		int pos = (int)NTS_INSTRUMENT*100+contadorInstrumento;
@@ -303,6 +300,9 @@ void parser::instrumentos() {
 			cout << "Falta fim de linha" << endl;
 			localizaErro();
 		}
+		
+		if(*tipo == TK_SETUP)
+			break;
 	}
 }
 
@@ -398,6 +398,9 @@ void parser::configuracao() {
 			localizaErro();
 		}
 		copiaTabela.erase(copiaTabela.begin());
+		
+		if(*tipo == TK_SHEETMUSIC)
+			break;
 	}
 }
 
@@ -413,7 +416,7 @@ void parser::partitura() {
 			ritornelo = true;
 			
 		} else if(*tipo != TK_IDENTIFIER) {
-			cout << "Esperava-se um identificador" << endl;
+			cout << "Esperava-se um identificador ou fim de bloco." << endl;
 			localizaErro();
 		}
 		
@@ -604,10 +607,23 @@ bool parser::numeros() {
 
 
 void parser::localizaErro() {
-	cout << "Perto de: " << copiaTabela.front().valor 
-		<< ". Linha: " << copiaTabela.front().linha 
+	cout << "Antes de: ";
+	
+	if(copiaTabela.size() > 5) {
+		cout << "\n\t...";
+		vector<token>::iterator print;
+		for(print = copiaTabela.begin(); print != copiaTabela.begin()+5; print++)
+			cout << *print.valor << " ";
+	
+		cout << "..." << endl;
+	} else {
+		cout << copiaTabela.front().valor
+	}
+
+	cout << " na linha: " << copiaTabela.front().linha 
 		<< " e coluna: " << copiaTabela.front().coluna << endl;
 		
+	cout << "Existe(m) erro(s) na sintática do código-fonte" << endl;
 	exit(0);
 }
 
