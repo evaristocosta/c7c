@@ -268,6 +268,8 @@ public:
 	
 	void stringC7();
 	bool numeros();
+	void linhasMusicais();
+	void adicionaNotas(int);
 	
 	
 	void localizaErro();
@@ -281,7 +283,8 @@ private:
 	int *posicao, 
 		contadorString = 0, 
 		contadorInstrumento = 0, 
-		contadorNumero = 0;
+		contadorNumero = 0,
+		contadorCompasso = 0;
 	naoTerminais qualNo;
 	
 	bool erro;

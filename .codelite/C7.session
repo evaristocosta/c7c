@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace">
-  <int Value="1" Name="m_selectedTab"/>
+  <int Value="3" Name="m_selectedTab"/>
   <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
@@ -12,8 +12,8 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
-      <int Value="92" Name="FirstVisibleLine"/>
-      <int Value="404" Name="CurrentLine"/>
+      <int Value="174" Name="FirstVisibleLine"/>
+      <int Value="491" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds">
         <IntVectorItem Value="33"/>
@@ -22,33 +22,76 @@
         <IntVectorItem Value="73"/>
         <IntVectorItem Value="83"/>
         <IntVectorItem Value="97"/>
-        <IntVectorItem Value="108"/>
-        <IntVectorItem Value="122"/>
-        <IntVectorItem Value="131"/>
-        <IntVectorItem Value="165"/>
-        <IntVectorItem Value="238"/>
-        <IntVectorItem Value="307"/>
-        <IntVectorItem Value="407"/>
-        <IntVectorItem Value="427"/>
-        <IntVectorItem Value="451"/>
+        <IntVectorItem Value="133"/>
+        <IntVectorItem Value="167"/>
+        <IntVectorItem Value="240"/>
+        <IntVectorItem Value="309"/>
       </IntVector>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
-      <int Value="114" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <int Value="263" Name="FirstVisibleLine"/>
+      <int Value="271" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
-      <int Value="210" Name="FirstVisibleLine"/>
-      <int Value="210" Name="CurrentLine"/>
+      <int Value="277" Name="FirstVisibleLine"/>
+      <int Value="285" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
   </TabInfoArray>
   <SerializedObject Name="m_breakpoints">
-    <long Value="0" Name="Count"/>
+    <long Value="3" Name="Count"/>
+    <SerializedObject Name="Breakpoint0">
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="file"/>
+      <int Value="406" Name="lineno"/>
+      <wxString Value="" Name="function_name"/>
+      <wxString Value="" Name="memory_address"/>
+      <int Value="1" Name="bp_type"/>
+      <int Value="0" Name="watchpoint_type"/>
+      <wxString Value="" Name="watchpt_data"/>
+      <CData Name="commandlist"/>
+      <bool Value="0" Name="regex"/>
+      <bool Value="0" Name="is_temp"/>
+      <bool Value="1" Name="is_enabled"/>
+      <int Value="0" Name="ignore_number"/>
+      <wxString Value="" Name="conditions"/>
+      <int Value="0" Name="origin"/>
+    </SerializedObject>
+    <SerializedObject Name="Breakpoint1">
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="file"/>
+      <int Value="451" Name="lineno"/>
+      <wxString Value="" Name="function_name"/>
+      <wxString Value="" Name="memory_address"/>
+      <int Value="1" Name="bp_type"/>
+      <int Value="0" Name="watchpoint_type"/>
+      <wxString Value="" Name="watchpt_data"/>
+      <CData Name="commandlist"/>
+      <bool Value="0" Name="regex"/>
+      <bool Value="0" Name="is_temp"/>
+      <bool Value="1" Name="is_enabled"/>
+      <int Value="0" Name="ignore_number"/>
+      <wxString Value="" Name="conditions"/>
+      <int Value="0" Name="origin"/>
+    </SerializedObject>
+    <SerializedObject Name="Breakpoint2">
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="file"/>
+      <int Value="509" Name="lineno"/>
+      <wxString Value="" Name="function_name"/>
+      <wxString Value="" Name="memory_address"/>
+      <int Value="1" Name="bp_type"/>
+      <int Value="0" Name="watchpoint_type"/>
+      <wxString Value="" Name="watchpt_data"/>
+      <CData Name="commandlist"/>
+      <bool Value="0" Name="regex"/>
+      <bool Value="0" Name="is_temp"/>
+      <bool Value="1" Name="is_enabled"/>
+      <int Value="0" Name="ignore_number"/>
+      <wxString Value="" Name="conditions"/>
+      <int Value="0" Name="origin"/>
+    </SerializedObject>
   </SerializedObject>
 </Session>

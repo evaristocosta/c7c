@@ -8,7 +8,7 @@ lexical::lexical() {
 	
 	linha = 0;
 	coluna = 0;
-	posicao = 5000000;
+	posicao = 10000000;
 	
 	original = "line.txt";
 	tamanhoDoArquivo = GetFileSize(original);
@@ -285,7 +285,7 @@ token lexical::proximoToken() {
 	afd.reset();
 	string lexema;
 	palavra += '$';
-	coluna = 0;
+	//coluna = 0;
 
 	for(auto in = palavra.begin(); in < palavra.end(); in++) {
 		lexema += *in;
@@ -424,7 +424,7 @@ void lexical::geraArquivoToken() {
 		if(receptor->tipo == TK_EMPTY)
 			arquivoToken << receptor->valor << "\t";
 		else if(receptor->tipo != TK_EOF)
-			arquivoToken << receptor->posicao << "\t";
+			arquivoToken << nomeToken(receptor->tipo) << "," << receptor->coluna << "\t";
 		else
 			arquivoToken << receptor->tipo << "\t";
 	}

@@ -103,7 +103,6 @@ void parser::sintatico() {
 			throw 13;
 		/* ======================================== */
 		
-		
 		/* ================ SEÇÃO PARTITURA ================ */
 		// Pesquisa \sheetmusic
 		if(*tipo == TK_SHEETMUSIC) {
@@ -127,6 +126,9 @@ void parser::sintatico() {
 		} else 
 			throw 14;
 		/* ======================================== */
+		
+		/* ================ FIM DAS SEÇÕES ================ */
+		// Se ainda houver algo no vetor, erro
 		
 	} catch(int erroBloco) {
 		switch(erroBloco) {
@@ -401,9 +403,161 @@ void parser::configuracao() {
 
 /* ================== ABRE PARTITURA ================== */
 void parser::partitura() {
+	bool ritornelo = false;
 	
+	while(*tipo != TK_DPIPE){
+		if(*tipo == TK_PIPEDDOT) {
+			arvore.insert_edge(NTS_SHEET, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+			ritornelo = true;
+			
+		} else if(*tipo != TK_IDENTIFIER) {
+			cout << "Esperava-se um identificador" << endl;
+			localizaErro();
+		}
+		
+		linhasMusicais();
+		
+		while(ritornelo) {
+			if(*tipo == TK_NUMBER && copiaTabela.at(1).tipo == TK_DOT) {
+				
+				arvore.insert_edge(NTS_SHEET, *posicao);
+				copiaTabela.erase(copiaTabela.begin());
+				
+				arvore.insert_edge(NTS_SHEET, *posicao);
+				copiaTabela.erase(copiaTabela.begin());
+				
+			} else if(*tipo == TK_DDOTPIPE) {
+				arvore.insert_edge(NTS_SHEET, *posicao);
+				copiaTabela.erase(copiaTabela.begin());
+				
+				ritornelo = false;
+			} else {
+				cout << "Erro em repeticao" << endl;
+				localizaErro();
+			}
+			
+			linhasMusicais();
+		}
+	}
 }
 
+
+void parser::linhasMusicais() {
+	++contadorCompasso;
+	int compasso = NTS_COMPASS*20+contadorCompasso;
+	
+	while(*tipo == TK_IDENTIFIER) {
+		arvore.insert_edge(NTS_SHEET, compasso);
+		// verifica tudo de uma vez
+		if(copiaTabela.at(0).tipo == TK_IDENTIFIER 
+			&& copiaTabela.at(1).tipo == TK_DOT
+			&& copiaTabela.at(2).tipo == TK_NUMBER
+			&& copiaTabela.at(3).tipo == TK_EQUAL) {
+				
+			
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+		} else {
+			cout << "Atribuicao de notas mal declarada" << endl;
+			localizaErro();
+		}
+		
+		// opcional
+		if(*tipo == TK_SUM) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+		}
+		
+		//adicao de notas
+		adicionaNotas(compasso);
+		
+		
+		while(*tipo == TK_COMPASSUM) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+			adicionaNotas(compasso);
+		}
+		
+		if(*tipo == TK_SPIPE
+			|| *tipo == TK_SUM) {
+				
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+		} else {
+			cout << "Compasso mal terminado" << endl;
+			localizaErro();
+		}
+	}
+}
+
+
+void parser::adicionaNotas(int compasso) {
+	if(*tipo != TK_NUMBER) {
+		cout << "Altura precisa ser definida por um número inteiro" << endl;
+		localizaErro();
+	}
+	
+	while(*tipo == TK_NUMBER) {
+		arvore.insert_edge(compasso, *posicao);
+		copiaTabela.erase(copiaTabela.begin());
+		
+		if(*tipo == TK_DOT) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+		} else {
+			cout << "Falta de pontuacao" << endl;
+			localizaErro();
+		}
+			
+		
+		if(*tipo == TK_IDENTIFIER) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+		} else {
+			cout << "Nota nao reconhecida" << endl;
+			localizaErro();
+		}
+			
+		//opcional # b bequadro
+		if(*tipo == TK_SHARP 
+			|| !copiaTabela.front().valor.compare("b")) {
+			//|| copiaTabela.front().valor.compare(bequadro)
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+		}
+		
+		if(*tipo == TK_DOT) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+		} else {
+			cout << "Falta de pontuacao" << endl;
+			localizaErro();
+		}
+		
+		if(*tipo == TK_IDENTIFIER) {
+			arvore.insert_edge(compasso, *posicao);
+			copiaTabela.erase(copiaTabela.begin());
+			
+		} else {
+			arvore.insert_edge(compasso, NTS_NUMBER*1000+contadorNumero-1);
+			numeros();
+		}
+	}
+}
 
 void parser::stringC7() {
 	copiaTabela.erase(copiaTabela.begin());
