@@ -429,8 +429,21 @@ void lexical::printTokens(bool imprime){
 	}
 }
 
-/*
+
 void lexical::exertarNotas() {
+	token tipo = {TK_T_INT, "numInt", 0, 0};
+	
+	token varA = {TK_IDENTIFIER, "A", 0, 0},
+		varB = {TK_IDENTIFIER, "B", 0, 0},
+		varC = {TK_IDENTIFIER, "C", 0, 0},
+		varD = {TK_IDENTIFIER, "D", 0, 0},
+		varE = {TK_IDENTIFIER, "E", 0, 0},
+		varF = {TK_IDENTIFIER, "F", 0, 0},
+		varG = {TK_IDENTIFIER, "G", 0, 0},
+		varP = {TK_IDENTIFIER, "P", 0, 0};
+		
+	token atrib = {TK_EQUAL, "=", 0, 0};
+
 	token A = {TK_NUMBER, "1", 0, 0},
 		B = {TK_NUMBER, "2", 0, 0},
 		C = {TK_NUMBER, "3", 0, 0},
@@ -439,27 +452,67 @@ void lexical::exertarNotas() {
 		F = {TK_NUMBER, "6", 0, 0},
 		G = {TK_NUMBER, "7", 0, 0},
 		P = {TK_NUMBER, "0", 0, 0};
+		
+	token spipe = {TK_SPIPE, "|", 0, 0};
 	
 	size_t i = 0;
 	
 	for(i = 0; tabelaDeSimbolos.at(i).tipo != TK_INSTRUMENTS && i < tabelaDeSimbolos.size(); i++) {}
 	if(i == tabelaDeSimbolos.size()) {
-		//problema
+		cout << "Falta bloco de \instruments" << endl;
+		exit(0);
 	}
 	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varA);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, A);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+2, B);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+3, C);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+4, D);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+5, E);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+6, F);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+7, G);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+8, P);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
 	
-		
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varB);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, B);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varC);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, C);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varD);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, D);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varE);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, E);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varF);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, F);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varG);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, G);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varP);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, P);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
 }
 
-*/
+
 // =============== CALCULA TAMANHO DO ARQUIVO ===============
 //https://codereview.stackexchange.com/a/1407
 long lexical::GetFileSize(string filename) {
