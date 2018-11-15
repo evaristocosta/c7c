@@ -160,8 +160,9 @@ public:
 	
 	// Manipulação de arquivo
 	long GetFileSize(string);
-	void geraArquivoToken();
+	void geraArquivoToken(bool,bool,bool,bool);
 	//void exertarNotas();
+	void printTokens(bool);
 	
 	// Lista com tokens	
 	vector<token> tabelaDeSimbolos;
