@@ -3,18 +3,25 @@
 // Definição do autômato
 DFA<char> afd(0, false);
 
-lexical::lexical() {
+lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
+	original = nomeDoArquivo;
+	
+	if(!(original.size() > 1)) {
+		cout << "Forneça um nome de arquivo válido" << endl;
+		exit(0);
+	}
+	
+	
+	tamanhoDoArquivo = GetFileSize(original);
+	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
+	
 	cout << "Inicio da análise léxica..." << endl;
 	
 	linha = 0;
 	coluna = 0;
 	posicao = 10000000;
 	
-	original = "line.txt";
-	tamanhoDoArquivo = GetFileSize(original);
-	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
-	
-	arquivo = "_"+original;
+	arquivo = original+"_";
 	
 	// Realiza análise de alfabeto e remove comentários
 	analiseCaracteres();
@@ -25,12 +32,28 @@ lexical::lexical() {
 	// Realiza a tokenização
 	todosTokens();
 	
-	// Gera arquivo de tokens
-	geraArquivoToken(true, false, false, false);
+	
+	// Gera arquivo de tokens e tabela de símbolos
+	if(!opcao1.compare("-tk") && !(opcao2.size() > 0))
+		geraArquivoToken(true, false, false, false);
+	else if(!opcao1.compare("-tb") && !(opcao2.size() > 0))
+		geraArquivoTabelaDeSimbolos(true);
+	else if(!opcao1.compare("-tk") && !opcao2.compare("-tb")) {
+		geraArquivoToken(true, false, false, false);
+		geraArquivoTabelaDeSimbolos(true);
+	} else if(opcao1.size() > 0) {
+		cout << "Opcao(oes) invalida(s)" << endl;
+		exit(0);
+	}
+		
 	// Print de todos tokens
 	printTokens(false);
 	// Print da tabela de simbolos
-	printTabelaDeSimbolos(true);
+	printTabelaDeSimbolos(false);
+	
+	
+	const char *c = arquivo.c_str();
+	remove(c);
 	
 	//cout << "Qtde de linhas: " << linha << endl;
 	cout << "\nFim da análise léxica, não foram encontrados erros." << endl;
@@ -380,7 +403,7 @@ token lexical::reconheceReservadoComDoisPontos(string reservada) {
 void lexical::geraArquivoToken(bool nomes, bool valores, bool colunas, bool posicoes) {
 	
 	ofstream arquivoToken;
-	arquivoToken.open("TK_"+original);
+	arquivoToken.open(original+"TK.txt");
 	
 	// Print de todos tokens
 	int controlaLinha = 1;
@@ -411,6 +434,39 @@ void lexical::geraArquivoToken(bool nomes, bool valores, bool colunas, bool posi
 	}
 	
 	arquivoToken.close();
+}
+
+void lexical::geraArquivoTabelaDeSimbolos(bool imprime) {
+	if(imprime) {
+		ofstream arquivoTabelaDeSimbolos;
+		arquivoTabelaDeSimbolos.open(original+"TABLE.html");
+		
+		vector<token>::iterator receptor;
+		 arquivoTabelaDeSimbolos << "<!DOCTYPE html>\n"
+				"<html>\n"
+				"<body>\n" 
+				"<h2>TABELA DE SIMBOLOS</h2>"
+				"<table style=\"width:100%\">\n"
+					"<tr>\n"
+						"<th style=\"text-align: left;\">VALOR</th>\n"
+						"<th style=\"text-align: left;\">TOKEN</th>\n"
+						"<th style=\"text-align: left;\">LINHA</th>\n"
+						"<th style=\"text-align: left;\">COLUNA</th>\n"
+					"</tr>\n" << endl;
+					
+		for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+			 arquivoTabelaDeSimbolos << "<tr>\n"
+				<< "<td>\'"<< receptor->valor << "\'</td>\n" 
+				<< "<td>"<< nomeToken(receptor->tipo) << "</td>\n" 
+				<< "<td>"<< receptor->linha << "</td>\n" 
+				<< "<td>"<< receptor->coluna << "</td>\n" 
+				<< "</tr>\n";
+		}
+		
+		arquivoTabelaDeSimbolos << "</table>\n"
+				"</body>\n"
+				"</html>\n";
+	}
 }
 
 void lexical::printTokens(bool imprime){

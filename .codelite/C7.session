@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace">
-  <int Value="3" Name="m_selectedTab"/>
+  <int Value="0" Name="m_selectedTab"/>
   <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/main.cpp" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="6" Name="CurrentLine"/>
+      <int Value="18" Name="FirstVisibleLine"/>
+      <int Value="28" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="7" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds">
-        <IntVectorItem Value="34"/>
-        <IntVectorItem Value="49"/>
-        <IntVectorItem Value="60"/>
-        <IntVectorItem Value="74"/>
-        <IntVectorItem Value="84"/>
-        <IntVectorItem Value="98"/>
-        <IntVectorItem Value="134"/>
-        <IntVectorItem Value="241"/>
-        <IntVectorItem Value="310"/>
-        <IntVectorItem Value="450"/>
-        <IntVectorItem Value="511"/>
-      </IntVector>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
-      <int Value="57" Name="FirstVisibleLine"/>
-      <int Value="164" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds">
-        <IntVectorItem Value="20"/>
-        <IntVectorItem Value="76"/>
-      </IntVector>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
-      <int Value="270" Name="FirstVisibleLine"/>
-      <int Value="283" Name="CurrentLine"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
+      <int Value="9" Name="FirstVisibleLine"/>
+      <int Value="120" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="77"/>
+      </IntVector>
     </TabInfo>
   </TabInfoArray>
   <SerializedObject Name="m_breakpoints">

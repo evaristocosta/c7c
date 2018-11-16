@@ -140,7 +140,7 @@ struct token {
 class lexical {
 public:
 	// Construtor
-	lexical();
+	lexical(string,string,string);
 	
 	// Construtor do AFD
 	void constroeAFD();
@@ -160,6 +160,7 @@ public:
 	// Manipulação de arquivo
 	long GetFileSize(string);
 	void geraArquivoToken(bool,bool,bool,bool);
+	void geraArquivoTabelaDeSimbolos(bool);
 	void exertarNotas();
 	void printTokens(bool);
 	void printTabelaDeSimbolos(bool);
