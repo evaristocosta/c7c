@@ -120,7 +120,6 @@ static string nomeToken(tiposToken tk) {
 
 struct token {
 	// Inicializa novo 'Token'.
-//public:
 	enum tiposToken tipo; // Um 'tipoToken' correspondente ao tipo do recém criado 'token'.
 	string valor; // O 'String' valor do token. Os caracteres reais do lexema descritos.
 	int linha, // O número da linha em que o token foi encontrado no código-fonte.
@@ -161,8 +160,9 @@ public:
 	// Manipulação de arquivo
 	long GetFileSize(string);
 	void geraArquivoToken(bool,bool,bool,bool);
-	//void exertarNotas();
+	void exertarNotas();
 	void printTokens(bool);
+	void printTabelaDeSimbolos(bool);
 	
 	// Lista com tokens	
 	vector<token> tabelaDeSimbolos;
@@ -277,7 +277,6 @@ public:
 	
 private:
 	vector<token> copiaTabela;
-	stack<token> pilhaDeSimbolos;
 	NGraph::Graph arvore;
 	
 	tiposToken *tipo;

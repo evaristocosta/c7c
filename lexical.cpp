@@ -4,7 +4,7 @@
 DFA<char> afd(0, false);
 
 lexical::lexical() {
-	cout << "Inicio da análise léxica:" << endl;
+	cout << "Inicio da análise léxica..." << endl;
 	
 	linha = 0;
 	coluna = 0;
@@ -25,8 +25,15 @@ lexical::lexical() {
 	// Realiza a tokenização
 	todosTokens();
 	
-	cout << "\nFim da análise léxica:" << endl;
-	cout << "Qtde de linhas: " << linha << endl;
+	// Gera arquivo de tokens
+	geraArquivoToken(true, false, false, false);
+	// Print de todos tokens
+	printTokens(false);
+	// Print da tabela de simbolos
+	printTabelaDeSimbolos(true);
+	
+	//cout << "Qtde de linhas: " << linha << endl;
+	cout << "\nFim da análise léxica, não foram encontrados erros." << endl;
 }
 
 
@@ -49,7 +56,7 @@ void lexical::analiseCaracteres() {
 	newSource.open(arquivo);
 	
 	
-	cout << "Inicio - análise do alfabeto" << endl;
+	//cout << "Inicio - análise do alfabeto" << endl;
 	
 	// Pega linha e verifica caracter a caracter
 	while(getline(sourceCode, linhaInteira)) {
@@ -75,7 +82,7 @@ void lexical::analiseCaracteres() {
 		linhaAnalise++;		
 	}
 	
-	cout << "Fim - análise do alfabeto\n" << endl;
+	//cout << "Fim - análise do alfabeto\n" << endl;
 	
 	if(erro) {
 		cout << "Erro(s) encontrado(s) na análise do alfabeto." << endl;
@@ -167,7 +174,7 @@ void lexical::todosTokens(){
 	
 	sourceCode.open(arquivo);
 	
-	cout << "Início - tokenização" << endl;
+	//cout << "Início - tokenização" << endl;
 	
 	// Pega linha por linha
 	while(getline(sourceCode, linhaInteira)) {
@@ -192,22 +199,21 @@ void lexical::todosTokens(){
 		}
 	}
 	
-	geraArquivoToken(true, false, false, false);
+	
 	
 	// insert de notas
 	//exertarNotas();
 	
-	// Print de todos tokens
-	printTokens(true);
+	sourceCode.close();
 	
 	if(erro) {
 		cout << "Erro(s) encontrado(s) na tokenização." << endl;
 		exit(0);
 	}
 		
-	cout << "Fim - tokenização" << endl;
+	//cout << "Fim - tokenização" << endl;
 	
-	sourceCode.close();
+	
 }
 
 token lexical::proximoToken() {
@@ -270,7 +276,7 @@ token lexical::proximoToken() {
 	}
 	
 	if(!lexema.compare("$"))
-		return trabalhado = {TK_EOF, "\n", linha, coluna, posicao};
+		return trabalhado = {TK_EOF, "\\n", linha, coluna, posicao};
 	else {
 		// No caso de haver algo na string, significa que não foi reconhecido
 		palavra.pop_back();		
@@ -429,7 +435,21 @@ void lexical::printTokens(bool imprime){
 	}
 }
 
+void lexical::printTabelaDeSimbolos(bool imprime) {
+	if(imprime) {
+		vector<token>::iterator receptor;
+		cout << " ===== TABELA DE SIMBOLOS =====" << endl;
+		cout << "VALOR:\t\tTOKEN:\t\tLINHA:\t\tCOLUNA:" << endl;
+		for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
+			cout << receptor->valor << "\t\t" 
+				<< nomeToken(receptor->tipo) << "\t\t" 
+				<< receptor->linha << "\t\t" 
+				<< receptor->coluna << endl;
+		}
+	}
+}
 
+/*
 void lexical::exertarNotas() {
 	token tipo = {TK_T_INT, "numInt", 0, 0};
 	
@@ -459,7 +479,7 @@ void lexical::exertarNotas() {
 	
 	for(i = 0; tabelaDeSimbolos.at(i).tipo != TK_INSTRUMENTS && i < tabelaDeSimbolos.size(); i++) {}
 	if(i == tabelaDeSimbolos.size()) {
-		cout << "Falta bloco de \instruments" << endl;
+		cout << "Falta bloco de \\instruments" << endl;
 		exit(0);
 	}
 	
@@ -511,7 +531,7 @@ void lexical::exertarNotas() {
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, P);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
 }
-
+*/
 
 // =============== CALCULA TAMANHO DO ARQUIVO ===============
 //https://codereview.stackexchange.com/a/1407

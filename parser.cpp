@@ -3,8 +3,9 @@
 parser::parser(vector<token> tabelaDeSimbolos) {
 	// vai funcionar como uma pilha
 	copiaTabela = tabelaDeSimbolos;
-	
+	cout << "Início da análise sintática..." << endl;
 	sintatico();
+	cout << "Fim da análise sintática, não foram encontrados erros." << endl;
 }
 
 void parser::sintatico() {	
@@ -210,8 +211,8 @@ void parser::autoria() {
 			
 		// define string
 		if(*tipo == TK_DQUOTE) {
-			arvore.insert_edge(qualNo, NTS_STRING*10+contadorString);
-			arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
+			arvore.insert_edge(qualNo, NTS_STRING*10+contadorString+1);
+			arvore.insert_edge(NTS_STRING*10+contadorString+1, *posicao);
 			stringC7();
 		} else {
 			cout << "Falta inicio de string";
@@ -613,11 +614,11 @@ void parser::localizaErro() {
 		cout << "\n\t...";
 		vector<token>::iterator print;
 		for(print = copiaTabela.begin(); print != copiaTabela.begin()+5; print++)
-			cout << *print.valor << " ";
+			cout << print->valor << " ";
 	
 		cout << "..." << endl;
 	} else {
-		cout << copiaTabela.front().valor
+		cout << copiaTabela.front().valor;
 	}
 
 	cout << " na linha: " << copiaTabela.front().linha 
