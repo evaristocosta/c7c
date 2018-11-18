@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace">
-  <int Value="0" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/C7.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/main.cpp" Name="FileName"/>
-      <int Value="18" Name="FirstVisibleLine"/>
-      <int Value="28" Name="CurrentLine"/>
+      <int Value="20" Name="FirstVisibleLine"/>
+      <int Value="38" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/lexical.cpp" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <int Value="21" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/c7c.hpp" Name="FileName"/>
-      <int Value="9" Name="FirstVisibleLine"/>
-      <int Value="120" Name="CurrentLine"/>
+      <int Value="70" Name="FirstVisibleLine"/>
+      <int Value="68" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds">
-        <IntVectorItem Value="77"/>
+        <IntVectorItem Value="194"/>
       </IntVector>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/lucas/Documentos/UTFPR/Compiladores/C7/parser.cpp" Name="FileName"/>
+      <int Value="336" Name="FirstVisibleLine"/>
+      <int Value="352" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks">
+        <wxString Value="352:7"/>
+        <wxString Value="370:7"/>
+        <wxString Value="522:7"/>
+        <wxString Value="550:7"/>
+        <wxString Value="557:7"/>
+        <wxString Value="560:7"/>
+      </wxArrayString>
+      <IntVector Name="CollapsedFolds"/>
     </TabInfo>
   </TabInfoArray>
   <SerializedObject Name="m_breakpoints">

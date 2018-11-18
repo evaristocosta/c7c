@@ -9,7 +9,6 @@ int main(int argc, char **argv)
 	 * 3- gerar arquivo da tabela de simbolos;
 	 * */
 	 
-	 /*
 	if(!(argc > 1)) {
 	 cout << "Não foi possível compilar\n\nArgumento necessário:\n" 
 		"1) nome do arquivo a ser lido;\n"
@@ -21,9 +20,9 @@ int main(int argc, char **argv)
 	 
 	 exit(0);
 	} 
-	*/
-	string nomeDoArquivo("line.txt"), op1(""), op2("");
-	/*
+	
+	string nomeDoArquivo(""), op1(""), op2("");
+	
 	switch(argc){
 		case 4:
 			op2 = argv[3];
@@ -36,10 +35,12 @@ int main(int argc, char **argv)
 		 cout << "erro" << endl;
 		 exit(0);
 	}
-	*/
-	lexical *Lexical = new lexical(nomeDoArquivo, op1, op2);
 	
+	// Variável inútil
+	string removedorDeWarning = nomeToken(TK_AUTHOR);
+	
+	lexical *Lexical = new lexical(nomeDoArquivo, op1, op2);
 	parser *Parser = new parser(Lexical->tabelaDeSimbolos);
 	
-	return 0;
+	return Parser->erro;
 }

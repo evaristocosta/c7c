@@ -5,7 +5,6 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-//#include <list>
 #include <vector>
 #include <stack>
 #include <regex>
@@ -107,8 +106,6 @@ static string nomeToken(tiposToken tk) {
 		case TK_SUM:			return "TK_SUM";
 		case TK_COMPASSUM:		return "TK_COMPASSUM";
 		case TK_SUB:			return "TK_SUB";
-		//case TK_COMMENT:		return "TK_COMMENT";
-		//case TK_NEWLINE:		return "TK_NEWLINE";
 		case TK_DCOMMA:			return "TK_DCOMMA";
 		case TK_INVERTSLASH:	return "TK_INVERTSLASH";
 		case TK_SHARP:			return "TK_SHARP";
@@ -274,7 +271,9 @@ public:
 	void adicionaNotas(int);
 	
 	
-	void localizaErro();
+	void localizaErro(int);
+	
+	bool erro;
 	
 private:
 	vector<token> copiaTabela;
@@ -288,7 +287,7 @@ private:
 		contadorCompasso = 0;
 	naoTerminais qualNo;
 	
-	bool erro;
+
 	
 };
 /* ======================================== */

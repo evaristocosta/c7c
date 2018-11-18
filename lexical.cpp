@@ -15,7 +15,7 @@ lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
 	tamanhoDoArquivo = GetFileSize(original);
 	cout << "Tamanho do arquivo: " << tamanhoDoArquivo << endl;
 	
-	cout << "Inicio da análise léxica..." << endl;
+	cout << "**********\nInicio da análise léxica..." << endl;
 	
 	linha = 0;
 	coluna = 0;
@@ -56,7 +56,7 @@ lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
 	remove(c);
 	
 	//cout << "Qtde de linhas: " << linha << endl;
-	cout << "\nFim da análise léxica, não foram encontrados erros." << endl;
+	cout << "\nFim da análise léxica, não foram encontrados erros.\n**********" << endl;
 }
 
 
@@ -478,13 +478,15 @@ void lexical::printTokens(bool imprime){
 				cout << "\n";
 				controlaLinha = receptor->linha;
 			}
+			
+			string nomeTipo = nomeToken(receptor->tipo);
 
 			if(receptor->tipo == TK_EMPTY) {
 				erro = true;
 				cout << receptor->valor << " ";
 			}
 			else if(receptor->tipo != TK_EOF)
-				cout << nomeToken(receptor->tipo) << " ";
+				cout << nomeTipo << " ";
 
 		}
 		cout << "\n";

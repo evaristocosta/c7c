@@ -3,16 +3,16 @@
 parser::parser(vector<token> tabelaDeSimbolos) {
 	// vai funcionar como uma pilha
 	copiaTabela = tabelaDeSimbolos;
-	cout << "Início da análise sintática..." << endl;
+	cout << "**********\nInício da análise sintática..." << endl;
 	sintatico();
-	cout << "Fim da análise sintática, não foram encontrados erros." << endl;
+	cout << "Fim da análise sintática, não foram encontrados erros.\n**********" << endl;
 }
 
 void parser::sintatico() {	
 	// Se existe a raíz
 	if(!(copiaTabela.size() > 0)) {
-		cout << "Código-fonte vazio" << endl;
-		exit(0);
+		cout << "ERRO: Código-fonte vazio." << endl;
+		exit(EXIT_FAILURE);
 	}
 			
 	// limpa os EOF
@@ -30,6 +30,8 @@ void parser::sintatico() {
 		// ponteiros pro comeco da pilha - facilita a escrita
 		tipo = &copiaTabela.front().tipo;
 		posicao = &copiaTabela.front().posicao;
+		// Variável inútil
+		string removedorDeWarning2 = nomeToken(copiaTabela.front().tipo);
 		
 		// Pesquisa por \author
 		if(*tipo == TK_AUTHOR) {
@@ -132,33 +134,35 @@ void parser::sintatico() {
 		// Se ainda houver algo no vetor, erro
 		
 	} catch(int erroBloco) {
+		/*
+		cout << "ERRO: ";
 		switch(erroBloco) {
 			case 1:
-				cout << "Falta bloco de \\author" << endl;
+				cout << "Falta bloco de autoria (\\author)" << endl;
 			break;
 			case 11:
-				cout << "Falta || de \\author" << endl;
+				cout << "Falta final do bloco de autoria (\\author)" << endl;
 			break;
 			case 2:
-				cout << "Falta bloco de \\instruments" << endl;
+				cout << "Falta bloco de instrumentos (\\instruments)" << endl;
 			break;
 			case 12:
-				cout << "Falta || de \\instruments" << endl;
+				cout << "Falta final do bloco de instrumentos (\\instruments)" << endl;
 			break;
 			case 3:
-				cout << "Falta bloco de \\setup" << endl;
+				cout << "Falta bloco de configurações (\\setup)" << endl;
 			break;
 			case 13:
-				cout << "Falta || de \\setup" << endl;
+				cout << "Falta final do bloco de configurações (\\setup)" << endl;
 			break;
 			case 4:
-				cout << "Falta bloco de \\sheetmusic" << endl;
+				cout << "Falta bloco de partitura (\\sheetmusic)" << endl;
 			break;
 			case 14:
-				cout << "Falta || de \\sheetmusic" << endl;
+				cout << "Falta final do bloco de (\\sheetmusic)" << endl;
 			break;
-		}
-		localizaErro();
+		}*/
+		localizaErro(erroBloco);
 	}
 }
 
@@ -195,18 +199,16 @@ void parser::autoria() {
 				arvore.insert_edge(qualNo, *posicao);
 			break;
 			default:
-				cout << "Falta declaracao de tipo" << endl;
-				localizaErro();
+				localizaErro(21);
 		}
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// pesquisa dois pontos
 		if(*tipo == TK_DDOT) {
 			arvore.insert_edge(qualNo, *posicao);
-		} else {
-			cout << "Falta dois pontos depois da declaração" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(30);
+		
 		copiaTabela.erase(copiaTabela.begin());
 			
 		// define string
@@ -214,19 +216,17 @@ void parser::autoria() {
 			arvore.insert_edge(qualNo, NTS_STRING*10+contadorString+1);
 			arvore.insert_edge(NTS_STRING*10+contadorString+1, *posicao);
 			stringC7();
-		} else {
-			cout << "Falta inicio de string";
-			localizaErro();
-		}
+		} else 
+			localizaErro(22);
+		
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// procura |
 		if(*tipo == TK_SPIPE) {
 			arvore.insert_edge(qualNo, *posicao);
-		} else {
-			cout << "Falta delimitador de linha" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(28);
+		
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// caso especial
@@ -259,10 +259,8 @@ void parser::instrumentos() {
 		} else if(*tipo == TK_T_INT) {
 			fracional = false;
 			tipoDeIdent = true;
-		}else {
-			cout << "Tipo não reconhecido" << endl;
-			localizaErro();
-		}
+		}else 
+			localizaErro(24);
 		
 		
 		arvore.insert_edge(pos, *posicao);
@@ -272,35 +270,27 @@ void parser::instrumentos() {
 		if(*tipo == TK_IDENTIFIER) {
 			arvore.insert_edge(pos, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-		} else {
-			cout << "Esperava-se um identificador" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(25);
 			
 		if(tipoDeIdent) {
 			if(*tipo == TK_EQUAL) {
 				arvore.insert_edge(pos, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
-			} else {
-				cout << "Falta atribuicao" << endl;
-				localizaErro();
-			}
+			} else 
+				localizaErro(26);
 			
 			arvore.insert_edge(pos, NTS_NUMBER);
 			
-			if(numeros() && !fracional) {
-				cout << "Declaracao de inteiro e atribuicao de fracional" << endl;
-				localizaErro();
-			}
+			if(numeros() && !fracional) 
+				localizaErro(27);
 		}
 		
 		if(*tipo == TK_SPIPE) {
 			arvore.insert_edge(pos, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-		} else {
-			cout << "Falta fim de linha" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(28);
 		
 		if(*tipo == TK_SETUP)
 			break;
@@ -333,28 +323,24 @@ void parser::configuracao() {
 				arvore.insert_edge(qualNo, *posicao);
 			break;
 			default:
-				cout << "Especificador nao reconhecido" << endl;
-				localizaErro();
+				localizaErro(29);
 		}
 		copiaTabela.erase(copiaTabela.begin());
 		
 		// pesquisa dois pontos
 		if(*tipo == TK_DDOT) {
 			arvore.insert_edge(qualNo, *posicao);
-		} else {
-			cout << "Falta dois pontos depois da declaração" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(30);
+		
 		copiaTabela.erase(copiaTabela.begin());
 		
 		if(key && !time) {
 			if(*tipo == TK_IDENTIFIER) {
 				arvore.insert_edge(qualNo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
-			} else {
-				cout << "Nota nao reconhecida" << endl;
-				localizaErro();
-			}
+			} else 
+				localizaErro(31);
 			
 			if(*tipo == TK_SHARP || !copiaTabela.front().valor.compare("b")) {
 				arvore.insert_edge(qualNo, *posicao);
@@ -366,23 +352,18 @@ void parser::configuracao() {
 		} else if(time && !key) {
 			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero+1);
 			
-			if(numeros()) {
-				cout << "Fracionais não sao aceitos na formula de compasso" << endl;
-				localizaErro();
-			}
+			if(numeros()) 
+				localizaErro(32);
 			
 			if(*tipo == TK_SLASH) {
 				arvore.insert_edge(qualNo, *posicao);
-			} else {
-				cout << "Falta / da formula" << endl;
-				localizaErro();
-			}
+			} else 
+				localizaErro(33);
+			
 			copiaTabela.erase(copiaTabela.begin());
 			
-			if(numeros()) {
-				cout << "Fracionais não sao aceitos na formula de compasso" << endl;
-				localizaErro();
-			}
+			if(numeros()) 
+				localizaErro(32);
 			
 			time = false;
 			
@@ -394,10 +375,9 @@ void parser::configuracao() {
 		// procura |
 		if(*tipo == TK_SPIPE) {
 			arvore.insert_edge(qualNo, *posicao);
-		} else {
-			cout << "Falta delimitador de linha" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(28);
+		
 		copiaTabela.erase(copiaTabela.begin());
 		
 		if(*tipo == TK_SHEETMUSIC)
@@ -416,10 +396,8 @@ void parser::partitura() {
 			
 			ritornelo = true;
 			
-		} else if(*tipo != TK_IDENTIFIER) {
-			cout << "Esperava-se um identificador ou fim de bloco." << endl;
-			localizaErro();
-		}
+		} else if(*tipo != TK_IDENTIFIER) 
+			localizaErro(36);
 		
 		linhasMusicais();
 		
@@ -437,10 +415,8 @@ void parser::partitura() {
 				copiaTabela.erase(copiaTabela.begin());
 				
 				ritornelo = false;
-			} else {
-				cout << "Erro em repeticao" << endl;
-				localizaErro();
-			}
+			} else 
+				localizaErro(37);
 			
 			linhasMusicais();
 		}
@@ -473,10 +449,8 @@ void parser::linhasMusicais() {
 			arvore.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
-		} else {
-			cout << "Atribuicao de notas mal declarada" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(45);
 		
 		// opcional
 		if(*tipo == TK_SUM) {
@@ -501,19 +475,15 @@ void parser::linhasMusicais() {
 			arvore.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
-		} else {
-			cout << "Compasso mal terminado" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(39);
 	}
 }
 
 
 void parser::adicionaNotas(int compasso) {
-	if(*tipo != TK_NUMBER) {
-		cout << "Altura precisa ser definida por um número inteiro" << endl;
-		localizaErro();
-	}
+	if(*tipo != TK_NUMBER) 
+		localizaErro(40);
 	
 	while(*tipo == TK_NUMBER) {
 		arvore.insert_edge(compasso, *posicao);
@@ -522,19 +492,14 @@ void parser::adicionaNotas(int compasso) {
 		if(*tipo == TK_DOT) {
 			arvore.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-		} else {
-			cout << "Falta de pontuacao" << endl;
-			localizaErro();
-		}
-			
+		} else 
+			localizaErro(41);
 		
 		if(*tipo == TK_IDENTIFIER) {
 			arvore.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-		} else {
-			cout << "Nota nao reconhecida" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(42);
 			
 		//opcional # b bequadro
 		if(*tipo == TK_SHARP 
@@ -547,10 +512,8 @@ void parser::adicionaNotas(int compasso) {
 		if(*tipo == TK_DOT) {
 			arvore.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-		} else {
-			cout << "Falta de pontuacao" << endl;
-			localizaErro();
-		}
+		} else 
+			localizaErro(41);
 		
 		if(*tipo == TK_IDENTIFIER) {
 			arvore.insert_edge(compasso, *posicao);
@@ -573,10 +536,8 @@ void parser::stringC7() {
 			arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
-		} else {
-			cout << "Erro em string" << endl;
-			exit(0);
-		}
+		} else 
+			localizaErro(44);
 	}
 	
 	// se sai do while, entao achou "
@@ -589,10 +550,8 @@ bool parser::numeros() {
 	if(*tipo == TK_NUMBER) {
 		arvore.insert_edge(NTS_NUMBER*1000+contadorNumero, *posicao);
 		copiaTabela.erase(copiaTabela.begin());
-	} else {
-		cout << "Atribuicao invalida" << endl;
-		localizaErro();
-	}
+	} else 
+		localizaErro(45);
 	
 	// verdadeiro se for frac
 	if(*tipo == TK_DOT && copiaTabela.at(1).tipo == TK_NUMBER) {
@@ -607,16 +566,104 @@ bool parser::numeros() {
 }
 
 
-void parser::localizaErro() {
-	cout << "Antes de: ";
+void parser::localizaErro(int valErro) {
+	cout << "ERRO (" << valErro << "): ";
+	switch(valErro) {
+		case 1:
+			cout << "Falta bloco de autoria (\\author)" << endl;
+		break;
+		case 11:
+			cout << "Falta final do bloco de autoria (\\author)" << endl;
+		break;
+		case 2:
+			cout << "Falta bloco de instrumentos (\\instruments)" << endl;
+		break;
+		case 12:
+			cout << "Falta final do bloco de instrumentos (\\instruments)" << endl;
+		break;
+		case 3:
+			cout << "Falta bloco de configurações (\\setup)" << endl;
+		break;
+		case 13:
+			cout << "Falta final do bloco de configurações (\\setup)" << endl;
+		break;
+		case 4:
+			cout << "Falta bloco de partitura (\\sheetmusic)" << endl;
+		break;
+		case 14:
+			cout << "Falta final do bloco de (\\sheetmusic)" << endl;
+		break;
+		case 21:
+			cout << "Falta declaração de tipo" << endl;
+		break;
+		case 22:
+			cout << "Falta inicio de string" << endl;
+		break;
+		case 24:
+			cout << "Tipo não reconhecido" << endl;
+		break;
+		case 25:
+			cout << "Esperava-se um identificador" << endl;
+		break;
+		case 26:
+			cout << "Falta atribuição" << endl;
+		break;
+		case 27:
+			cout << "Declaração de inteiro e atribuição de fracional" << endl;
+		break;
+		case 28:
+			cout << "Falta fim de linha (|)" << endl;
+		break;
+		case 29:
+			cout << "Especificador não reconhecido" << endl;
+		break;
+		case 30:
+			cout << "Falta dois pontos depois da declaração" << endl;
+		break;
+		case 31:
+			cout << "Nota não reconhecida" << endl;
+		break;
+		case 32:
+			cout << "Fracionais não são aceitos na formula de compasso" << endl;
+		break;
+		case 33:
+			cout << "Falta divisor (/) da fórmula de compasso" << endl;
+		break;
+		case 36:
+			cout << "Erro na elaboração de compasso" << endl;
+		break;
+		case 37:
+			cout << "Ritornelo mal construído" << endl;
+		break;
+		case 39:
+			cout << "Compasso mal terminado" << endl;
+		break;
+		case 40:
+			cout << "Altura precisa ser definida por um número inteiro" << endl;
+		break;
+		case 41:
+			cout << "Falta de pontuação" << endl;
+		break;
+		case 42:
+			cout << "Nota não reconhecida" << endl;
+		break;
+		case 44:
+			cout << "Erro em string" << endl;
+		break;
+		case 45:
+			cout << "Atribuição invalida" << endl;
+		break;
+	}
+	
+	cout << "Próximo de: ";
 	
 	if(copiaTabela.size() > 5) {
-		cout << "\n\t...";
+		cout << "\n\t... ";
 		vector<token>::iterator print;
-		for(print = copiaTabela.begin(); print != copiaTabela.begin()+5; print++)
+		for(print = copiaTabela.begin(); print != copiaTabela.begin()+4; print++)
 			cout << print->valor << " ";
 	
-		cout << "..." << endl;
+		cout << " ..." << endl;
 	} else {
 		cout << copiaTabela.front().valor;
 	}
@@ -625,6 +672,6 @@ void parser::localizaErro() {
 		<< " e coluna: " << copiaTabela.front().coluna << endl;
 		
 	cout << "Existe(m) erro(s) na sintática do código-fonte" << endl;
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
