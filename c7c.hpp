@@ -274,10 +274,10 @@ public:
 	void localizaErro(int);
 	
 	bool erro;
+	NGraph::Graph arvore;
 	
 private:
 	vector<token> copiaTabela;
-	NGraph::Graph arvore;
 	
 	tiposToken *tipo;
 	int *posicao, 
@@ -293,6 +293,18 @@ private:
 /* ======================================== */
 /* ======================================== */
 
-
+/* ============== SEMÂNTICO =============== */
+/* ======================================== */
+class semantic {
+public:
+	semantic(vector<token>, NGraph::Graph);
+	
+private:
+	NGraph::Graph arvore;
+	vector<token> tabelaDeSim;
+	
+};
+/* ======================================== */
+/* ======================================== */
 
 #endif //C7C_H

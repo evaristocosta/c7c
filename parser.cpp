@@ -131,37 +131,10 @@ void parser::sintatico() {
 		/* ======================================== */
 		
 		/* ================ FIM DAS SEÇÕES ================ */
-		// Se ainda houver algo no vetor, erro
+		if(copiaTabela.size() > 0) 
+			throw 46;
 		
 	} catch(int erroBloco) {
-		/*
-		cout << "ERRO: ";
-		switch(erroBloco) {
-			case 1:
-				cout << "Falta bloco de autoria (\\author)" << endl;
-			break;
-			case 11:
-				cout << "Falta final do bloco de autoria (\\author)" << endl;
-			break;
-			case 2:
-				cout << "Falta bloco de instrumentos (\\instruments)" << endl;
-			break;
-			case 12:
-				cout << "Falta final do bloco de instrumentos (\\instruments)" << endl;
-			break;
-			case 3:
-				cout << "Falta bloco de configurações (\\setup)" << endl;
-			break;
-			case 13:
-				cout << "Falta final do bloco de configurações (\\setup)" << endl;
-			break;
-			case 4:
-				cout << "Falta bloco de partitura (\\sheetmusic)" << endl;
-			break;
-			case 14:
-				cout << "Falta final do bloco de (\\sheetmusic)" << endl;
-			break;
-		}*/
 		localizaErro(erroBloco);
 	}
 }
@@ -653,6 +626,8 @@ void parser::localizaErro(int valErro) {
 		case 45:
 			cout << "Atribuição invalida" << endl;
 		break;
+		case 46:
+			cout << "Conteúdo desconhecido após fim do bloco de partitura" << endl;
 	}
 	
 	cout << "Próximo de: ";

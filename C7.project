@@ -101,5 +101,6 @@
     <File Name="c7c.hpp"/>
     <File Name="ngraph.hpp"/>
     <File Name="set_ops.hpp"/>
+    <File Name="src/semantic.cpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

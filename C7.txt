@@ -1,1 +1,1 @@
-./Release/main.cpp.o ./Release/lexical.cpp.o ./Release/DFA.cpp.o ./Release/parser.cpp.o
+./Debug/main.cpp.o ./Debug/lexical.cpp.o ./Debug/DFA.cpp.o ./Debug/parser.cpp.o ./Debug/src_semantic.cpp.o

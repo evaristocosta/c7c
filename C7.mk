@@ -2,18 +2,18 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Release
+## Debug
 ProjectName            :=C7
-ConfigurationName      :=Release
+ConfigurationName      :=Debug
 WorkspacePath          :=/home/lucas/Documentos/UTFPR/Compiladores/C7
 ProjectPath            :=/home/lucas/Documentos/UTFPR/Compiladores/C7
-IntermediateDirectory  :=./Release
+IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Lucas Costa
-Date                   :=11/18/18
+Date                   :=11/21/18
 CodeLitePath           :=/home/lucas/.codelite
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -28,7 +28,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
-Preprocessors          :=$(PreprocessorSwitch)NDEBUG 
+Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
@@ -50,8 +50,8 @@ LibPath                := $(LibraryPathSwitch).
 AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++
 CC       := /usr/bin/gcc
-CXXFLAGS :=  -O2 -Wall $(Preprocessors)
-CFLAGS   :=  -O2 -Wall $(Preprocessors)
+CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
+CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := /usr/bin/as
 
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) $(IntermediateDirectory)/parser.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) $(IntermediateDirectory)/parser.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) 
 
 
 
@@ -79,11 +79,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 MakeIntermediateDirs:
-	@test -d ./Release || $(MakeDirCommand) ./Release
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 
 $(IntermediateDirectory)/.d:
-	@test -d ./Release || $(MakeDirCommand) ./Release
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 PreBuild:
 
@@ -123,12 +123,20 @@ $(IntermediateDirectory)/parser.cpp$(DependSuffix): parser.cpp
 $(IntermediateDirectory)/parser.cpp$(PreprocessSuffix): parser.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/parser.cpp$(PreprocessSuffix) parser.cpp
 
+$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix): src/semantic.cpp $(IntermediateDirectory)/src_semantic.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/lucas/Documentos/UTFPR/Compiladores/C7/src/semantic.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_semantic.cpp$(DependSuffix): src/semantic.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_semantic.cpp$(DependSuffix) -MM src/semantic.cpp
+
+$(IntermediateDirectory)/src_semantic.cpp$(PreprocessSuffix): src/semantic.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_semantic.cpp$(PreprocessSuffix) src/semantic.cpp
+
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
 ##
 ## Clean
 ##
 clean:
-	$(RM) -r ./Release/
+	$(RM) -r ./Debug/
 
 
