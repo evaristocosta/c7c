@@ -242,7 +242,7 @@ enum naoTerminais {
 	// Regras gerais
 	NTS_DIGIT, 			// <digito>
 	NTS_DIGITS, 		// <digitos>
-	NTS_NUMBER, 		// <numero>
+	NTS_NUMBER, 		// <numero> -- 434
 	NTS_FRAC, 			// <fracao>
 	NTS_CHAR, 			// <letra>
 	NTS_IDEN, 			// <identificador>

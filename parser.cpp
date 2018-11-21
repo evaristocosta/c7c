@@ -134,6 +134,8 @@ void parser::sintatico() {
 		if(copiaTabela.size() > 0) 
 			throw 46;
 		
+		arvore.print();
+		
 	} catch(int erroBloco) {
 		localizaErro(erroBloco);
 	}
@@ -253,7 +255,8 @@ void parser::instrumentos() {
 			} else 
 				localizaErro(26);
 			
-			arvore.insert_edge(pos, NTS_NUMBER);
+			++contadorNumero;
+			arvore.insert_edge(pos, NTS_NUMBER*1000+contadorNumero);
 			
 			if(numeros() && !fracional) 
 				localizaErro(27);
@@ -323,7 +326,8 @@ void parser::configuracao() {
 			key = false;
 			
 		} else if(time && !key) {
-			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero+1);
+			++contadorNumero;
+			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero);
 			
 			if(numeros()) 
 				localizaErro(32);
@@ -341,7 +345,8 @@ void parser::configuracao() {
 			time = false;
 			
 		} else {
-			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero+1);
+			++contadorNumero;
+			arvore.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero);
 			numeros();
 		}
 
@@ -493,7 +498,8 @@ void parser::adicionaNotas(int compasso) {
 			copiaTabela.erase(copiaTabela.begin());
 			
 		} else {
-			arvore.insert_edge(compasso, NTS_NUMBER*1000+contadorNumero-1);
+			++contadorNumero;
+			arvore.insert_edge(compasso, NTS_NUMBER*1000+contadorNumero);
 			numeros();
 		}
 	}
@@ -517,9 +523,7 @@ void parser::stringC7() {
 	arvore.insert_edge(NTS_STRING*10+contadorString, *posicao);
 }
 
-bool parser::numeros() {
-	++contadorNumero;
-	
+bool parser::numeros() {	
 	if(*tipo == TK_NUMBER) {
 		arvore.insert_edge(NTS_NUMBER*1000+contadorNumero, *posicao);
 		copiaTabela.erase(copiaTabela.begin());

@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) $(IntermediateDirectory)/parser.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/lexical.cpp$(ObjectSuffix) $(IntermediateDirectory)/DFA.cpp$(ObjectSuffix) $(IntermediateDirectory)/parser.cpp$(ObjectSuffix) $(IntermediateDirectory)/semantic.cpp$(ObjectSuffix) 
 
 
 
@@ -123,13 +123,13 @@ $(IntermediateDirectory)/parser.cpp$(DependSuffix): parser.cpp
 $(IntermediateDirectory)/parser.cpp$(PreprocessSuffix): parser.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/parser.cpp$(PreprocessSuffix) parser.cpp
 
-$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix): src/semantic.cpp $(IntermediateDirectory)/src_semantic.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/lucas/Documentos/UTFPR/Compiladores/C7/src/semantic.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_semantic.cpp$(DependSuffix): src/semantic.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_semantic.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_semantic.cpp$(DependSuffix) -MM src/semantic.cpp
+$(IntermediateDirectory)/semantic.cpp$(ObjectSuffix): semantic.cpp $(IntermediateDirectory)/semantic.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/lucas/Documentos/UTFPR/Compiladores/C7/semantic.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/semantic.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/semantic.cpp$(DependSuffix): semantic.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/semantic.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/semantic.cpp$(DependSuffix) -MM semantic.cpp
 
-$(IntermediateDirectory)/src_semantic.cpp$(PreprocessSuffix): src/semantic.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_semantic.cpp$(PreprocessSuffix) src/semantic.cpp
+$(IntermediateDirectory)/semantic.cpp$(PreprocessSuffix): semantic.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/semantic.cpp$(PreprocessSuffix) semantic.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

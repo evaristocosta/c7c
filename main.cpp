@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	 exit(0);
 	} 
 	*/
-	string nomeDoArquivo("line.txt"), op1(""), op2("");
+	string nomeDoArquivo("line.c7"), op1(""), op2("");
 	/*
 	switch(argc){
 		case 4:
