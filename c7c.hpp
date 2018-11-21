@@ -265,8 +265,8 @@ public:
 	void partitura();
 	
 	
-	void stringC7();
-	bool numeros();
+	NGraph::Graph stringC7();
+	NGraph::Graph numeros();
 	void linhasMusicais();
 	void adicionaNotas(int);
 	
@@ -274,7 +274,7 @@ public:
 	void localizaErro(int);
 	
 	bool erro;
-	NGraph::Graph arvore;
+	NGraph::Graph arvore, Aautor, Ainstrumentos, Aconfig, Apartitura;
 	
 private:
 	vector<token> copiaTabela;
@@ -287,7 +287,7 @@ private:
 		contadorCompasso = 0;
 	naoTerminais qualNo;
 	
-
+	bool numFrac;
 	
 };
 /* ======================================== */
