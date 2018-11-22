@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	 exit(0);
 	} 
 	*/
-	string nomeDoArquivo("line.c7"), op1(""), op2("");
+	string nomeDoArquivo("line.c7"), op1("-tk"), op2("-tb");
 	/*
 	switch(argc){
 		case 4:
@@ -36,14 +36,11 @@ int main(int argc, char **argv)
 		 exit(0);
 	}
 	*/
-	// Variável inútil
-	string removedorDeWarning = nomeToken(TK_AUTHOR);
-	
 	
 	
 	lexical *Lexical = new lexical(nomeDoArquivo, op1, op2);
 	parser *Parser = new parser(Lexical->tabelaDeSimbolos);
-	semantic *Semantic = new semantic(Lexical->tabelaDeSimbolos, Parser->arvore);
+	semantic *Semantic = new semantic(Lexical->tabelaDeSimbolos, Parser->todasArvores);
 	
 	
 	

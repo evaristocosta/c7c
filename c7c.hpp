@@ -127,6 +127,7 @@ struct token {
 	bool operator==(const token& rhs) {
 		return (tipo == rhs.tipo);
 	}
+	
 };
 /* ======================================== */
 /* ======================================== */
@@ -158,7 +159,7 @@ public:
 	long GetFileSize(string);
 	void geraArquivoToken(bool,bool,bool,bool);
 	void geraArquivoTabelaDeSimbolos(bool);
-	void exertarNotas();
+	void enxertarNotas();
 	void printTokens(bool);
 	void printTabelaDeSimbolos(bool);
 	
@@ -202,7 +203,7 @@ enum naoTerminais {
 	NTS_SSETUP, 		// <secao configuracao>
 	NTS_SSHEET, 		// <secao partitura>
 
-	// Seção autoria
+	// Seção autoria	406
 	NTS_AUTH, 			// <autoria>
 	NTS_TITLE, 			// <title>
 	NTS_SUBTITLE, 		// <subtitle>
@@ -239,7 +240,7 @@ enum naoTerminais {
 	NTS_NOTESTRUCT, 	// <estrutura de nota>
 	NTS_FINALNOTE, 		// <nota final>
 
-	// Regras gerais
+	// Regras gerais	431
 	NTS_DIGIT, 			// <digito>
 	NTS_DIGITS, 		// <digitos>
 	NTS_NUMBER, 		// <numero> -- 434
@@ -247,7 +248,52 @@ enum naoTerminais {
 	NTS_CHAR, 			// <letra>
 	NTS_IDEN, 			// <identificador>
 	NTS_SYMBOL, 		// <simbolos>
-	NTS_STRING, 		// <string>
+	NTS_STRING, 		// <string> -- 439
+};
+
+static string nomeNaoTerminal(naoTerminais nt){
+	switch(nt) {
+		case NTS_PROG: 			return "NTS_PROG";
+		case NTS_SAUTH: 		return "NTS_SAUTH";			
+		case NTS_SINSTR: 		return "NTS_SINSTR"; 		
+		case NTS_SSETUP: 		return "NTS_SSETUP"; 		
+		case NTS_SSHEET: 		return "NTS_SSHEET"; 		
+		case NTS_AUTH: 			return "NTS_AUTH"; 			
+		case NTS_TITLE: 		return "NTS_TITLE"; 			
+		case NTS_SUBTITLE: 		return "NTS_SUBTITLE"; 		
+		case NTS_COMPOSITOR: 	return "NTS_COMPOSITOR"; 	
+		case NTS_COPYRIGHT: 	return "NTS_COPYRIGHT"; 		
+		case NTS_INSTRUMENTS: 	return "NTS_INSTRUMENTS";	
+		case NTS_INSTRUMENT: 	return "NTS_INSTRUMENT"; 	
+		case NTS_TYPENUM: 		return "NTS_TYPENUM"; 		
+		case NTS_TYPEINT: 		return "NTS_TYPEINT"; 		
+		case NTS_TYPEFRAC: 		return "NTS_TYPEFRAC"; 		
+		case NTS_SETUP: 		return "NTS_SETUP"; 			
+		case NTS_KEY: 			return "NTS_KEY"; 			
+		case NTS_TIME: 			return "NTS_TIME"; 			
+		case NTS_BPM: 			return "NTS_BPM"; 			
+		case NTS_SHEET: 		return "NTS_SHEET"; 			
+		case NTS_SHEETSTRUCT: 	return "NTS_SHEETSTRUCT"; 	
+		case NTS_REP: 			return "NTS_REP"; 			
+		case NTS_MUSLINE: 		return "NTS_MUSLINE"; 		
+		case NTS_MUSLINES: 		return "NTS_MUSLINES"; 		
+		case NTS_COMPASS: 		return "NTS_COMPASS"; 		
+		case NTS_NOTES: 		return "NTS_NOTES"; 			
+		case NTS_NOTE: 			return "NTS_NOTE";
+		case NTS_HIGH: 			return "NTS_HIGH"; 			
+		case NTS_DURATION: 		return "NTS_DURATION"; 		
+		case NTS_NOTESTRUCT: 	return "NTS_NOTESTRUCT"; 	
+		case NTS_FINALNOTE: 	return "NTS_FINALNOTE"; 		
+		case NTS_DIGIT: 		return "NTS_DIGIT"; 			
+		case NTS_DIGITS: 		return "NTS_DIGITS"; 		
+		case NTS_NUMBER: 		return "NTS_NUMBER"; 		
+		case NTS_FRAC: 			return "NTS_FRAC"; 			
+		case NTS_CHAR: 			return "NTS_CHAR"; 			
+		case NTS_IDEN: 			return "NTS_IDEN"; 			
+		case NTS_SYMBOL: 		return "NTS_SYMBOL"; 		
+		case NTS_STRING: 		return "NTS_STRING"; 
+		defalt: 				return "default";
+	}
 };
 
 class parser {
@@ -276,6 +322,7 @@ public:
 	bool erro;
 	NGraph::Graph arvore, Aautor, Ainstrumentos, Aconfig, Apartitura;
 	
+	vector<NGraph::Graph> todasArvores;
 private:
 	vector<token> copiaTabela;
 	
@@ -297,11 +344,15 @@ private:
 /* ======================================== */
 class semantic {
 public:
-	semantic(vector<token>, NGraph::Graph);
+	semantic(vector<token>, vector<NGraph::Graph>);
+	
+	void vAutor();
+	void vInstrumentos();
+	void vConfig();
 	
 private:
-	NGraph::Graph arvore;
 	vector<token> tabelaDeSim;
+	NGraph::Graph arvAutor, arvInstr, arvConfig, arvPart, arvTot;
 	
 };
 /* ======================================== */

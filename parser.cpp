@@ -139,7 +139,11 @@ void parser::sintatico() {
 		arvore += Aconfig;
 		arvore += Apartitura;
 		
-		arvore.print();
+		todasArvores.push_back(Aautor);
+		todasArvores.push_back(Ainstrumentos);
+		todasArvores.push_back(Aconfig);
+		todasArvores.push_back(Apartitura);
+		todasArvores.push_back(arvore);
 		
 	} catch(int erroBloco) {
 		localizaErro(erroBloco);

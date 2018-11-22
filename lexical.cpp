@@ -32,6 +32,8 @@ lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
 	// Realiza a tokenização
 	todosTokens();
 	
+	//enxerta notas
+	enxertarNotas();
 	
 	// Gera arquivo de tokens e tabela de símbolos
 	if(!opcao1.compare("-tk") && !(opcao2.size() > 0))
@@ -452,6 +454,7 @@ void lexical::geraArquivoTabelaDeSimbolos(bool imprime) {
 						"<th style=\"text-align: left;\">TOKEN</th>\n"
 						"<th style=\"text-align: left;\">LINHA</th>\n"
 						"<th style=\"text-align: left;\">COLUNA</th>\n"
+						"<th style=\"text-align: left;\">POSICAO</th>\n"
 					"</tr>\n" << endl;
 					
 		for(receptor = tabelaDeSimbolos.begin(); receptor != tabelaDeSimbolos.end(); ++receptor) {
@@ -460,6 +463,7 @@ void lexical::geraArquivoTabelaDeSimbolos(bool imprime) {
 				<< "<td>"<< nomeToken(receptor->tipo) << "</td>\n" 
 				<< "<td>"<< receptor->linha << "</td>\n" 
 				<< "<td>"<< receptor->coluna << "</td>\n" 
+				<< "<td>"<< receptor->posicao << "</td>\n" 
 				<< "</tr>\n";
 		}
 		
@@ -507,31 +511,31 @@ void lexical::printTabelaDeSimbolos(bool imprime) {
 	}
 }
 
-/*
-void lexical::exertarNotas() {
-	token tipo = {TK_T_INT, "numInt", 0, 0};
-	
-	token varA = {TK_IDENTIFIER, "A", 0, 0},
-		varB = {TK_IDENTIFIER, "B", 0, 0},
-		varC = {TK_IDENTIFIER, "C", 0, 0},
-		varD = {TK_IDENTIFIER, "D", 0, 0},
-		varE = {TK_IDENTIFIER, "E", 0, 0},
-		varF = {TK_IDENTIFIER, "F", 0, 0},
-		varG = {TK_IDENTIFIER, "G", 0, 0},
-		varP = {TK_IDENTIFIER, "P", 0, 0};
-		
-	token atrib = {TK_EQUAL, "=", 0, 0};
 
-	token A = {TK_NUMBER, "1", 0, 0},
-		B = {TK_NUMBER, "2", 0, 0},
-		C = {TK_NUMBER, "3", 0, 0},
-		D = {TK_NUMBER, "4", 0, 0},
-		E = {TK_NUMBER, "5", 0, 0},
-		F = {TK_NUMBER, "6", 0, 0},
-		G = {TK_NUMBER, "7", 0, 0},
-		P = {TK_NUMBER, "0", 0, 0};
+void lexical::enxertarNotas() {
+	token tipo = {TK_T_INT, "numInt", 0, 0, 1};
+	
+	token varA = {TK_IDENTIFIER, "A", 0, 0, 2},
+		varB = {TK_IDENTIFIER, "B", 0, 0, 7},
+		varC = {TK_IDENTIFIER, "C", 0, 0, 12},
+		varD = {TK_IDENTIFIER, "D", 0, 0, 17},
+		varE = {TK_IDENTIFIER, "E", 0, 0, 22},
+		varF = {TK_IDENTIFIER, "F", 0, 0, 27},
+		varG = {TK_IDENTIFIER, "G", 0, 0, 32},
+		varP = {TK_IDENTIFIER, "P", 0, 0, 37};
 		
-	token spipe = {TK_SPIPE, "|", 0, 0};
+	token atrib = {TK_EQUAL, "=", 0, 0, 3};
+
+	token A = {TK_NUMBER, "1", 0, 0, 4},
+		B = {TK_NUMBER, "2", 0, 0, 9},
+		C = {TK_NUMBER, "3", 0, 0, 14},
+		D = {TK_NUMBER, "4", 0, 0, 19},
+		E = {TK_NUMBER, "5", 0, 0, 24},
+		F = {TK_NUMBER, "6", 0, 0, 29},
+		G = {TK_NUMBER, "7", 0, 0, 34},
+		P = {TK_NUMBER, "0", 0, 0, 39};
+		
+	token spipe = {TK_SPIPE, "|", 0, 0, 5};
 	
 	size_t i = 0;
 	
@@ -540,56 +544,80 @@ void lexical::exertarNotas() {
 		cout << "Falta bloco de \\instruments" << endl;
 		exit(0);
 	}
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varA);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, A);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varB);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varA);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, B);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varC);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varB);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, C);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varD);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varC);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, D);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varE);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varD);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, E);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varF);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varE);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, F);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varG);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varF);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, G);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
-	
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varP);
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
-	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, P);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varG);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
+	
 	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, spipe);
+	spipe.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, P);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, atrib);
+	atrib.posicao += 5;
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, varP);
+	tabelaDeSimbolos.insert(tabelaDeSimbolos.begin()+i+1, tipo);
+	tipo.posicao += 5;
 }
-*/
+
 
 // =============== CALCULA TAMANHO DO ARQUIVO ===============
 //https://codereview.stackexchange.com/a/1407
