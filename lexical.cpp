@@ -37,7 +37,7 @@ lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
 	
 	// Gera arquivo de tokens e tabela de símbolos
 	if(!opcao1.compare("-tk") && !(opcao2.size() > 0))
-		geraArquivoToken(true, false, false, false);
+		geraArquivoToken(true, false, false, true);
 	else if(!opcao1.compare("-tb") && !(opcao2.size() > 0))
 		geraArquivoTabelaDeSimbolos(true);
 	else if(!opcao1.compare("-tk") && !opcao2.compare("-tb")) {

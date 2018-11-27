@@ -498,10 +498,10 @@ void parser::adicionaNotas(int compasso) {
 		} else 
 			localizaErro(42);
 			
-		//opcional # b bequadro
+		//opcional # b N
 		if(*tipo == TK_SHARP 
-			|| !copiaTabela.front().valor.compare("b")) {
-			//|| copiaTabela.front().valor.compare(bequadro)
+			|| !copiaTabela.front().valor.compare("b")
+			|| !copiaTabela.front().valor.compare("N")) {
 			Apartitura.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		}

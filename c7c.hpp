@@ -210,14 +210,14 @@ enum naoTerminais {
 	NTS_COMPOSITOR, 	// <compositor>
 	NTS_COPYRIGHT, 		// <copyright>
 
-	// Seção instrumentos
+	// Seção instrumentos 411
 	NTS_INSTRUMENTS,	// <instrumentos>
 	NTS_INSTRUMENT, 	// <instrumento>
 	NTS_TYPENUM, 		// <tipo numerico>
 	NTS_TYPEINT, 		// <inteiro>
 	NTS_TYPEFRAC, 		// <quebrado>
 
-	// Seção configuração
+	// Seção configuração 416
 	NTS_SETUP, 			// <configuracao>
 	NTS_KEY, 			// <key>
 	NTS_TIME, 			// <time>
@@ -353,6 +353,11 @@ public:
 private:
 	vector<token> tabelaDeSim;
 	NGraph::Graph arvAutor, arvInstr, arvConfig, arvPart, arvTot;
+	
+	int nodo;
+	
+	vector<tuple<int, string, float>> tNumerico;
+	vector<tuple<int, string>> tInstr;
 	
 };
 /* ======================================== */
