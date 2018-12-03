@@ -421,11 +421,11 @@ void parser::partitura() {
 }
 
 
-void parser::linhasMusicais() {
-	++contadorCompasso;
-	int compasso = NTS_COMPASS*20+contadorCompasso;
-	
+void parser::linhasMusicais() {	
 	while(*tipo == TK_IDENTIFIER) {
+		++contadorCompasso;
+		int compasso = NTS_COMPASS*20+contadorCompasso;
+		
 		Apartitura.insert_edge(NTS_SHEET, compasso);
 		// verifica tudo de uma vez
 		if(copiaTabela.at(0).tipo == TK_IDENTIFIER 

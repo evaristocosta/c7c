@@ -513,29 +513,29 @@ void lexical::printTabelaDeSimbolos(bool imprime) {
 
 
 void lexical::enxertarNotas() {
-	token tipo = {TK_T_INT, "numInt", 0, 0, 1};
+	token tipo = {TK_T_INT, "numInt", 0, 0, posicao+1};
 	
-	token varA = {TK_IDENTIFIER, "A", 0, 0, 2},
-		varB = {TK_IDENTIFIER, "B", 0, 0, 7},
-		varC = {TK_IDENTIFIER, "C", 0, 0, 12},
-		varD = {TK_IDENTIFIER, "D", 0, 0, 17},
-		varE = {TK_IDENTIFIER, "E", 0, 0, 22},
-		varF = {TK_IDENTIFIER, "F", 0, 0, 27},
-		varG = {TK_IDENTIFIER, "G", 0, 0, 32},
-		varP = {TK_IDENTIFIER, "P", 0, 0, 37};
+	token varA = {TK_IDENTIFIER, "A", 0, 0, posicao+2},
+		varB = {TK_IDENTIFIER, "B", 0, 0, posicao+7},
+		varC = {TK_IDENTIFIER, "C", 0, 0, posicao+12},
+		varD = {TK_IDENTIFIER, "D", 0, 0, posicao+17},
+		varE = {TK_IDENTIFIER, "E", 0, 0, posicao+22},
+		varF = {TK_IDENTIFIER, "F", 0, 0, posicao+27},
+		varG = {TK_IDENTIFIER, "G", 0, 0, posicao+32},
+		varP = {TK_IDENTIFIER, "P", 0, 0, posicao+37};
 		
-	token atrib = {TK_EQUAL, "=", 0, 0, 3};
+	token atrib = {TK_EQUAL, "=", 0, 0, posicao+3};
 
-	token A = {TK_NUMBER, "1", 0, 0, 4},
-		B = {TK_NUMBER, "2", 0, 0, 9},
-		C = {TK_NUMBER, "3", 0, 0, 14},
-		D = {TK_NUMBER, "4", 0, 0, 19},
-		E = {TK_NUMBER, "5", 0, 0, 24},
-		F = {TK_NUMBER, "6", 0, 0, 29},
-		G = {TK_NUMBER, "7", 0, 0, 34},
-		P = {TK_NUMBER, "0", 0, 0, 39};
+	token A = {TK_NUMBER, "1", 0, 0, posicao+4},
+		B = {TK_NUMBER, "2", 0, 0, posicao+9},
+		C = {TK_NUMBER, "3", 0, 0, posicao+14},
+		D = {TK_NUMBER, "4", 0, 0, posicao+19},
+		E = {TK_NUMBER, "5", 0, 0, posicao+24},
+		F = {TK_NUMBER, "6", 0, 0, posicao+29},
+		G = {TK_NUMBER, "7", 0, 0, posicao+34},
+		P = {TK_NUMBER, "0", 0, 0, posicao+39};
 		
-	token spipe = {TK_SPIPE, "|", 0, 0, 5};
+	token spipe = {TK_SPIPE, "|", 0, 0, posicao+5};
 	
 	size_t i = 0;
 	

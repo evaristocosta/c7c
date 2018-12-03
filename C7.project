@@ -103,4 +103,6 @@
     <File Name="set_ops.hpp"/>
     <File Name="semantic.cpp"/>
   </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

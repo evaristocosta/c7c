@@ -359,6 +359,15 @@ private:
 	vector<tuple<int, string, float>> tNumerico;
 	vector<tuple<int, string>> tInstr;
 	
+	
+	NGraph::Graph::const_iterator p;
+	NGraph::Graph::vertex_set Si;
+	NGraph::Graph::vertex_set::const_iterator t;
+	NGraph::Graph::vertex_set Sii;
+	NGraph::Graph::vertex_set::const_iterator w;
+	NGraph::Graph::vertex_set Siii;
+	NGraph::Graph::vertex_set::const_iterator u;
+	
 };
 /* ======================================== */
 /* ======================================== */
