@@ -313,7 +313,7 @@ public:
 	
 	NGraph::Graph stringC7();
 	NGraph::Graph numeros();
-	void linhasMusicais();
+	void linhasMusicais(bool);
 	void adicionaNotas(int);
 	
 	
@@ -331,7 +331,10 @@ private:
 		contadorString = 0, 
 		contadorInstrumento = 0, 
 		contadorNumero = 0,
-		contadorCompasso = 0;
+		contadorCompasso = 0,
+		contadorRitornelo = 0,
+		contadorNotas = 0,
+		contadorNota = 0;
 	naoTerminais qualNo;
 	
 	bool numFrac;

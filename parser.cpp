@@ -388,7 +388,10 @@ void parser::partitura() {
 	
 	while(*tipo != TK_DPIPE){
 		if(*tipo == TK_PIPEDDOT) {
-			Apartitura.insert_edge(NTS_SHEET, *posicao);
+			++contadorRitornelo;
+			
+			Apartitura.insert_edge(NTS_SHEET, NTS_REP*60+contadorRitornelo);
+			Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
 			ritornelo = true;
@@ -396,37 +399,41 @@ void parser::partitura() {
 		} else if(*tipo != TK_IDENTIFIER) 
 			localizaErro(36);
 		
-		linhasMusicais();
+		linhasMusicais(ritornelo);
 		
 		while(ritornelo) {
 			if(*tipo == TK_NUMBER && copiaTabela.at(1).tipo == TK_DOT) {
 				
-				Apartitura.insert_edge(NTS_SHEET, *posicao);
+				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
 				
-				Apartitura.insert_edge(NTS_SHEET, *posicao);
+				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
 				
 			} else if(*tipo == TK_DDOTPIPE) {
-				Apartitura.insert_edge(NTS_SHEET, *posicao);
+				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
 				
 				ritornelo = false;
 			} else 
 				localizaErro(37);
 			
-			linhasMusicais();
+			linhasMusicais(ritornelo);
 		}
 	}
 }
 
 
-void parser::linhasMusicais() {	
+void parser::linhasMusicais(bool ritornelo) {	
 	while(*tipo == TK_IDENTIFIER) {
 		++contadorCompasso;
 		int compasso = NTS_COMPASS*20+contadorCompasso;
 		
-		Apartitura.insert_edge(NTS_SHEET, compasso);
+		if(ritornelo)
+			Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, compasso);
+		else
+			Apartitura.insert_edge(NTS_SHEET, compasso);
+			
 		// verifica tudo de uma vez
 		if(copiaTabela.at(0).tipo == TK_IDENTIFIER 
 			&& copiaTabela.at(1).tipo == TK_DOT
@@ -482,18 +489,26 @@ void parser::adicionaNotas(int compasso) {
 	if(*tipo != TK_NUMBER) 
 		localizaErro(40);
 	
+	++contadorNotas;
+	int notas = NTS_NOTES*20000+contadorNotas;
+	Apartitura.insert_edge(compasso, notas);
+	
 	while(*tipo == TK_NUMBER) {
-		Apartitura.insert_edge(compasso, *posicao);
+		++contadorNota;
+		int nota = NTS_NOTE*25000+contadorNota;
+		Apartitura.insert_edge(notas, nota);
+		
+		Apartitura.insert_edge(nota, *posicao);
 		copiaTabela.erase(copiaTabela.begin());
 		
 		if(*tipo == TK_DOT) {
-			Apartitura.insert_edge(compasso, *posicao);
+			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
 			localizaErro(41);
 		
 		if(*tipo == TK_IDENTIFIER) {
-			Apartitura.insert_edge(compasso, *posicao);
+			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
 			localizaErro(42);
@@ -502,23 +517,23 @@ void parser::adicionaNotas(int compasso) {
 		if(*tipo == TK_SHARP 
 			|| !copiaTabela.front().valor.compare("b")
 			|| !copiaTabela.front().valor.compare("N")) {
-			Apartitura.insert_edge(compasso, *posicao);
+			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		}
 		
 		if(*tipo == TK_DOT) {
-			Apartitura.insert_edge(compasso, *posicao);
+			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 		} else 
 			localizaErro(41);
 		
 		if(*tipo == TK_IDENTIFIER) {
-			Apartitura.insert_edge(compasso, *posicao);
+			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
 			
 		} else {
 			++contadorNumero;
-			Apartitura.insert_edge(compasso, NTS_NUMBER*1000+contadorNumero);
+			Apartitura.insert_edge(nota, NTS_NUMBER*1000+contadorNumero);
 			Apartitura += numeros();
 		}
 	}

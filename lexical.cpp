@@ -19,7 +19,7 @@ lexical::lexical(string nomeDoArquivo, string opcao1, string opcao2) {
 	
 	linha = 0;
 	coluna = 0;
-	posicao = 10000000;
+	posicao = 20000000;
 	
 	arquivo = original+"_";
 	
