@@ -30,8 +30,6 @@ void parser::sintatico() {
 		// ponteiros pro comeco da pilha - facilita a escrita
 		tipo = &copiaTabela.front().tipo;
 		posicao = &copiaTabela.front().posicao;
-		// Variável inútil
-		string removedorDeWarning2 = nomeToken(copiaTabela.front().tipo);
 		
 		// Pesquisa por \author
 		if(*tipo == TK_AUTHOR) {
@@ -248,9 +246,8 @@ void parser::instrumentos() {
 		}else 
 			localizaErro(24);
 		
-		
+		// salva o tipo
 		Ainstrumentos.insert_edge(pos, *posicao);
-		
 		copiaTabela.erase(copiaTabela.begin());
 		
 		if(*tipo == TK_IDENTIFIER) {
@@ -259,6 +256,7 @@ void parser::instrumentos() {
 		} else 
 			localizaErro(25);
 			
+		// se não for instrumento	
 		if(tipoDeIdent) {
 			if(*tipo == TK_EQUAL) {
 				Ainstrumentos.insert_edge(pos, *posicao);
@@ -266,12 +264,12 @@ void parser::instrumentos() {
 			} else 
 				localizaErro(26);
 			
+			// numeros em nós próprios
 			++contadorNumero;
-			NGraph::Graph AinstrumentosN;
-			AinstrumentosN.insert_edge(pos, NTS_NUMBER*1000+contadorNumero);
-			AinstrumentosN += numeros();
-			Ainstrumentos += AinstrumentosN;
-			
+			Ainstrumentos.insert_edge(pos, NTS_NUMBER*1000+contadorNumero);
+			Ainstrumentos += numeros();
+
+			// se era pra ser fracional
 			if(numFrac && !fracional) 
 				localizaErro(27);
 		}
@@ -282,6 +280,7 @@ void parser::instrumentos() {
 		} else 
 			localizaErro(28);
 		
+		// caso for o próximo bloco, sem ||
 		if(*tipo == TK_SETUP)
 			break;
 	}
@@ -293,6 +292,7 @@ void parser::configuracao() {
 	key = false;
 	time = false;
 	
+	// vai direto pra qual item da configuração
 	while(*tipo != TK_DPIPE) {
 		switch(*tipo) {
 			case TK_KEY:
@@ -325,6 +325,7 @@ void parser::configuracao() {
 		
 		copiaTabela.erase(copiaTabela.begin());
 		
+		// faz separação entre declarações
 		if(key && !time) {
 			if(*tipo == TK_IDENTIFIER) {
 				Aconfig.insert_edge(qualNo, *posicao);
@@ -332,18 +333,25 @@ void parser::configuracao() {
 			} else 
 				localizaErro(31);
 			
-			if(*tipo == TK_SHARP || !copiaTabela.front().valor.compare("b")) {
+			// opcional
+			if(*tipo == TK_SUB) {
 				Aconfig.insert_edge(qualNo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
-			} 
+				
+				if(*tipo == TK_SHARP || !copiaTabela.front().valor.compare("b")) {
+					Aconfig.insert_edge(qualNo, *posicao);
+					copiaTabela.erase(copiaTabela.begin());
+				} else
+					localizaErro(23);
+			}
 			
 			key = false;
 			
 		} else if(time && !key) {
 			++contadorNumero;
 			Aconfig.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero);
-			
 			Aconfig += numeros();
+			
 			if(numFrac) 
 				localizaErro(32);
 			
@@ -356,8 +364,8 @@ void parser::configuracao() {
 			
 			++contadorNumero;
 			Aconfig.insert_edge(qualNo, NTS_NUMBER*1000+contadorNumero);
-			
 			Aconfig += numeros();
+			
 			if(numFrac) 
 				localizaErro(32);
 			
@@ -387,6 +395,8 @@ void parser::partitura() {
 	bool ritornelo = false;
 	
 	while(*tipo != TK_DPIPE){
+		// se for ritornelo, adiciona nó próprio
+		// pra separação do que está dentro do ritornelo e entre ritornelos
 		if(*tipo == TK_PIPEDDOT) {
 			++contadorRitornelo;
 			
@@ -401,7 +411,9 @@ void parser::partitura() {
 		
 		linhasMusicais(ritornelo);
 		
+		// enquanto estiver dentro do escopo do ritornelo
 		while(ritornelo) {
+			// se for outro final
 			if(*tipo == TK_NUMBER && copiaTabela.at(1).tipo == TK_DOT) {
 				
 				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
@@ -409,7 +421,8 @@ void parser::partitura() {
 				
 				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
-				
+			
+			// final do ritornelo	
 			} else if(*tipo == TK_DDOTPIPE) {
 				Apartitura.insert_edge(NTS_REP*60+contadorRitornelo, *posicao);
 				copiaTabela.erase(copiaTabela.begin());
@@ -423,7 +436,7 @@ void parser::partitura() {
 	}
 }
 
-
+/* ================== ABRE LINHA MUSICAL ================== */
 void parser::linhasMusicais(bool ritornelo) {	
 	while(*tipo == TK_IDENTIFIER) {
 		++contadorCompasso;
@@ -465,11 +478,10 @@ void parser::linhasMusicais(bool ritornelo) {
 		//adicao de notas
 		adicionaNotas(compasso);
 		
-		
 		while(*tipo == TK_COMPASSUM) {
 			Apartitura.insert_edge(compasso, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
-			
+			// continua adicionando notas
 			adicionaNotas(compasso);
 		}
 		
@@ -484,16 +496,18 @@ void parser::linhasMusicais(bool ritornelo) {
 	}
 }
 
-
+/* ================== ABRE NOTAS ================== */
 void parser::adicionaNotas(int compasso) {
 	if(*tipo != TK_NUMBER) 
 		localizaErro(40);
 	
 	++contadorNotas;
 	int notas = NTS_NOTES*20000+contadorNotas;
+	// notas de um compasso
 	Apartitura.insert_edge(compasso, notas);
 	
 	while(*tipo == TK_NUMBER) {
+		// nó próprio para nota
 		++contadorNota;
 		int nota = NTS_NOTE*25000+contadorNota;
 		Apartitura.insert_edge(notas, nota);
@@ -507,6 +521,7 @@ void parser::adicionaNotas(int compasso) {
 		} else 
 			localizaErro(41);
 		
+		// nome da nota
 		if(*tipo == TK_IDENTIFIER) {
 			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
@@ -514,12 +529,19 @@ void parser::adicionaNotas(int compasso) {
 			localizaErro(42);
 			
 		//opcional # b N
-		if(*tipo == TK_SHARP 
-			|| !copiaTabela.front().valor.compare("b")
-			|| !copiaTabela.front().valor.compare("N")) {
+		if(*tipo == TK_SUB) {
 			Apartitura.insert_edge(nota, *posicao);
 			copiaTabela.erase(copiaTabela.begin());
+			
+			if(*tipo == TK_SHARP 
+				|| !copiaTabela.front().valor.compare("b")
+				|| !copiaTabela.front().valor.compare("N")) {
+				Apartitura.insert_edge(nota, *posicao);
+				copiaTabela.erase(copiaTabela.begin());
+			} else 
+				localizaErro(23);
 		}
+		
 		
 		if(*tipo == TK_DOT) {
 			Apartitura.insert_edge(nota, *posicao);
@@ -539,6 +561,7 @@ void parser::adicionaNotas(int compasso) {
 	}
 }
 
+/* ================== FUNÇÃO GERAL: STRINGS ================== */
 NGraph::Graph parser::stringC7() {
 	NGraph::Graph grafoS;
 	copiaTabela.erase(copiaTabela.begin());
@@ -560,6 +583,7 @@ NGraph::Graph parser::stringC7() {
 	return grafoS;
 }
 
+/* ================== FUNÇÃO GERAL: NÚMEROS INTEIROS E QUEBRADOS ================== */
 NGraph::Graph parser::numeros() {
 	NGraph::Graph grafoN;
 	if(*tipo == TK_NUMBER) {
@@ -582,7 +606,7 @@ NGraph::Graph parser::numeros() {
 	return grafoN;
 }
 
-
+/* ================== FUNÇÃO GERAL: IDENTIFICAÇÃO DE ERROS ================== */
 void parser::localizaErro(int valErro) {
 	cout << "ERRO (" << valErro << "): ";
 	switch(valErro) {
@@ -615,6 +639,9 @@ void parser::localizaErro(int valErro) {
 		break;
 		case 22:
 			cout << "Falta inicio de string" << endl;
+		break;
+		case 23:
+			cout << "Acidente de nota não reconhecido" << endl;
 		break;
 		case 24:
 			cout << "Tipo não reconhecido" << endl;

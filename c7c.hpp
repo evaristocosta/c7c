@@ -352,16 +352,17 @@ public:
 	void vAutor();
 	void vInstrumentos();
 	void vConfig();
+	void vPartitura();
 	
 private:
 	vector<token> tabelaDeSim;
 	NGraph::Graph arvAutor, arvInstr, arvConfig, arvPart, arvTot;
 	
 	int nodo;
+	bool erro = false;
 	
 	vector<tuple<int, string, float>> tNumerico;
 	vector<tuple<int, string>> tInstr;
-	
 	
 	NGraph::Graph::const_iterator p;
 	NGraph::Graph::vertex_set Si;
