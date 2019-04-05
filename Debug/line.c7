@@ -10,10 +10,11 @@
 	cello c1 |
 	
 
-	numFrac sc = 322.25 |
+	numFrac sc = 0.5 |
 ||
 
 \setup
+
 	
 	time: 2/4 |
 	key: D-b |
@@ -21,6 +22,8 @@
 ||
 
 \sheetmusic
+	v1.1 = 1.P.1 2.C-#.1 2.C.sc 2.D.sc 1.P.1 |
+~
 	v1.1 =	1.P-#.4 +| 2.C.sc 2.G.sc 2.A.sc +| 2.G-b.0.75 1.F.2.25 2.D.1 |
 	v2.1 = 1.P.4 |
 	|:
@@ -31,5 +34,6 @@
 		v2.2 = 2.A.sc |
 	:|
 	v1.5 = 2.C.4 |
+~
 ||
 

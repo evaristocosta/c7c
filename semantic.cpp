@@ -12,6 +12,8 @@ semantic::semantic(vector<token> tabela, vector<Graph> arvs) {
 	arvPart = arvs.at(3);
 	arvTot = arvs.at(4);
 	
+	//arvPart.print();
+	
 	// verifica contrução de autoria
 	vAutor();
 	// verifica contrução de instrumentos
@@ -225,9 +227,57 @@ void semantic::vConfig() {
 void semantic::vPartitura() {
 	bool achou = false;
 	
+	for(p = arvPart.begin(); p != arvPart.end(); p++) {
+		// pega compasso
+		/*
+		if(arvPart.node(p)/20000 == NTS_NOTES) {			
+			Graph::vertex_set S = arvPart.out_neighbors(p);
+			Graph testeTree = arvPart.subgraph(S);
+			cout << "------ Pai:\n" << arvPart.node(p) << "\n------ Filhos:\n" << testeTree << endl;
+		}
+		*/
+		if(arvPart.node(p)/25000 == NTS_NOTE) {			
+			Graph::vertex_set S = arvPart.out_neighbors(p);
+			
+			t = S.begin();
+			for(int i = 0; i < 2; i++) 
+				t++;
+				
+			for(auto acha: tabelaDeSim) {
+				// verifica se acha na tabela
+				if((acha.posicao == (int)*t && acha.tipo == TK_IDENTIFIER)
+					|| (acha.posicao == ((int)*t + 1) && acha.tipo == TK_IDENTIFIER)) {
+					cout << acha.valor << endl;
+					
+					/* Procura valor na tupla (não funciona)
+					auto achou = find_if(tNumerico.begin(), tNumerico.end(), [](decltype (*begin(tNumerico)) e) {
+						return get<1>(e) == acha.valor;
+					});
+					if (achou != end(tNumerico)) {
+						cout << "Found" << endl;
+					}
+					*/
+				
+				}
+			}
+			
+			/*
+			Graph testeTree = arvPart.subgraph(S);
+			cout << "------ Pai:\n" << arvPart.node(p) << "\n------ Filhos:\n" << testeTree << endl;
+			*/
+		}
+	}
+	
+
+	/* Ideia de checagem de quantidade dentro do compasso
+	 * - Verificar na arvore existência de +|. A cada um desses, deve fechar +4 
+	 * dependendo da fórmula de compasso
+	 */ 
+	
 	// para cada nó da árvore
 	for(p = arvPart.begin(); p != arvPart.end(); p++) {
 		Si = Graph::out_neighbors(p);
+		
 		// itera sobre os filhos
 		for(t = Si.begin(); t != Si.end(); t++) {
 			for(auto acha: tabelaDeSim) {
@@ -262,4 +312,6 @@ void semantic::vPartitura() {
 	}
 	if(erro)
 		exit(EXIT_FAILURE);
+		
+	
 }

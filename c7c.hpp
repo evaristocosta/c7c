@@ -233,14 +233,14 @@ enum naoTerminais {
 	NTS_MUSLINES, 		// <linhas musicais>
 	// Compasso e notas
 	NTS_COMPASS, 		// <compassos>
-	NTS_NOTES, 			// <notas>
+	NTS_NOTES, 			// <notas> -- 426
 	NTS_NOTE, 			// <nota>
 	NTS_HIGH, 			// <altura>
 	NTS_DURATION, 		// <duracao>
 	NTS_NOTESTRUCT, 	// <estrutura de nota>
 	NTS_FINALNOTE, 		// <nota final>
 
-	// Regras gerais	431
+	// Regras gerais	432
 	NTS_DIGIT, 			// <digito>
 	NTS_DIGITS, 		// <digitos>
 	NTS_NUMBER, 		// <numero> -- 434

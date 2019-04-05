@@ -527,12 +527,12 @@ void lexical::enxertarNotas() {
 	token atrib = {TK_EQUAL, "=", 0, 0, posicao+3};
 
 	token A = {TK_NUMBER, "1", 0, 0, posicao+4},
-		B = {TK_NUMBER, "2", 0, 0, posicao+9},
-		C = {TK_NUMBER, "3", 0, 0, posicao+14},
-		D = {TK_NUMBER, "4", 0, 0, posicao+19},
-		E = {TK_NUMBER, "5", 0, 0, posicao+24},
-		F = {TK_NUMBER, "6", 0, 0, posicao+29},
-		G = {TK_NUMBER, "7", 0, 0, posicao+34},
+		B = {TK_NUMBER, "3", 0, 0, posicao+9},
+		C = {TK_NUMBER, "4", 0, 0, posicao+14},
+		D = {TK_NUMBER, "6", 0, 0, posicao+19},
+		E = {TK_NUMBER, "8", 0, 0, posicao+24},
+		F = {TK_NUMBER, "9", 0, 0, posicao+29},
+		G = {TK_NUMBER, "11", 0, 0, posicao+34},
 		P = {TK_NUMBER, "0", 0, 0, posicao+39};
 		
 	token spipe = {TK_SPIPE, "|", 0, 0, posicao+5};

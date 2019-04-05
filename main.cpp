@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	 * 2- gerar arquivo de tokens;
 	 * 3- gerar arquivo da tabela de simbolos;
 	 * */
-	 
+	 /*
 	if(!(argc > 1)) {
 	 cout << "Não foi possível compilar\n\nArgumento necessário:\n" 
 		"1) nome do arquivo a ser lido;\n"
@@ -20,9 +20,9 @@ int main(int argc, char **argv)
 	 
 	 exit(0);
 	} 
-
-	string nomeDoArquivo(""), op1(""), op2("");
-	
+*/
+	string nomeDoArquivo("line.c7"), op1("-tk"), op2("-tb");
+	/*
 	switch(argc){
 		case 4:
 			op2 = argv[3];
@@ -32,10 +32,10 @@ int main(int argc, char **argv)
 			nomeDoArquivo = argv[1];
 		break;
 		default:
-		 cout << "erro" << endl;
+		 cout << "Erro de entrada" << endl;
 		 exit(0);
 	}
-	
+	*/
 	
 	
 	lexical *Lexical = new lexical(nomeDoArquivo, op1, op2);
